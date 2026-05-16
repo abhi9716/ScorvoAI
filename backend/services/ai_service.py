@@ -5,9 +5,14 @@ import asyncio
 import httpx
 from pylatexenc.latex2text import LatexNodes2Text
 
-OLLAMA_BASE = "http://localhost:11434"
+OLLAMA_BASE = os.getenv("OLLAMA_BASE", "http://localhost:11434")
 OLLAMA_CLOUD_BASE = "https://ollama.com"
 OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY", "")
+
+# ─── Gemma 4 model — the single source of truth ──────────────────────────
+# All generative features in ScorvoAI run on this Google Gemma 4 model.
+# See NOTICE for attribution. Override via env var to test variants.
+GEMMA_MODEL = os.getenv("GEMMA_MODEL", "gemma4:31b-cloud")
 
 CHAT_SYSTEM_PROMPT = """You are an expert Indian government exam tutor for SSC, UPSC, Banking exams.
 
@@ -200,7 +205,7 @@ async def get_chat_response(question: str) -> str:
             response = await client.post(
                 f"{OLLAMA_BASE}/api/chat",
                 json={
-                    "model": "gemma4:31b-cloud",
+                    "model": GEMMA_MODEL,
                     "messages": [
                         {"role": "system", "content": CHAT_SYSTEM_PROMPT},
                         {"role": "user", "content": question}
@@ -224,7 +229,7 @@ async def get_chat_response_stream(question: str):
                 "POST",
                 f"{OLLAMA_BASE}/api/chat",
                 json={
-                    "model": "gemma4:31b-cloud",
+                    "model": GEMMA_MODEL,
                     "messages": [
                         {"role": "system", "content": CHAT_SYSTEM_PROMPT},
                         {"role": "user", "content": question}
@@ -254,7 +259,7 @@ async def get_solve_response(question: str) -> str:
             response = await client.post(
                 f"{OLLAMA_BASE}/api/chat",
                 json={
-                    "model": "gemma4:31b-cloud",
+                    "model": GEMMA_MODEL,
                     "messages": [
                         {"role": "system", "content": SOLVER_SYSTEM_PROMPT},
                         {"role": "user", "content": question}
@@ -314,7 +319,7 @@ async def generate_quiz_questions(count: int, subjects: list[str] | None = None,
             response = await client.post(
                 f"{OLLAMA_BASE}/api/chat",
                 json={
-                    "model": "gemma4:31b-cloud",
+                    "model": GEMMA_MODEL,
                     "messages": [
                         {"role": "system", "content": QUIZ_GEN_PROMPT.format(count=count, topics=topics_str, difficulty=diff_str, chapters=chapters_str)},
                         {"role": "user", "content": f"Generate {count} quiz questions."}
@@ -361,7 +366,7 @@ async def generate_quiz_questions_stream(count: int, subjects: list[str] | None 
             "POST",
             f"{OLLAMA_BASE}/api/chat",
             json={
-                "model": "gemma4:31b-cloud",
+                "model": GEMMA_MODEL,
                 "messages": [
                     {"role": "system", "content": QUIZ_GEN_PROMPT.format(count=count, topics=topics_str, difficulty=diff_str, chapters=chapters_str)},
                     {"role": "user", "content": f"Generate {count} quiz questions."}
@@ -424,7 +429,7 @@ async def classify_note_content(content: str) -> dict:
             response = await client.post(
                 f"{OLLAMA_BASE}/api/chat",
                 json={
-                    "model": "gemma4:31b-cloud",
+                    "model": GEMMA_MODEL,
                     "messages": [
                         {"role": "system", "content": NOTE_CLASSIFY_PROMPT},
                         {"role": "user", "content": content[:2000]}
@@ -461,7 +466,7 @@ async def format_note_content(content: str) -> str:
             response = await client.post(
                 f"{OLLAMA_BASE}/api/chat",
                 json={
-                    "model": "gemma4:31b-cloud",
+                    "model": GEMMA_MODEL,
                     "messages": [
                         {"role": "system", "content": NOTE_FORMAT_PROMPT},
                         {"role": "user", "content": content[:4000]}
@@ -490,7 +495,7 @@ async def generate_lesson(subject: str, chapter: str, difficulty: str = "medium"
             response = await client.post(
                 f"{OLLAMA_BASE}/api/chat",
                 json={
-                    "model": "gemma4:31b-cloud",
+                    "model": GEMMA_MODEL,
                     "messages": [
                         {"role": "system", "content": prompt},
                         {"role": "user", "content": user_msg}
@@ -519,7 +524,7 @@ async def generate_lesson_stream(subject: str, chapter: str, difficulty: str = "
                 "POST",
                 f"{OLLAMA_BASE}/api/chat",
                 json={
-                    "model": "gemma4:31b-cloud",
+                    "model": GEMMA_MODEL,
                     "messages": [
                         {"role": "system", "content": prompt},
                         {"role": "user", "content": user_msg}
@@ -608,7 +613,7 @@ async def generate_current_affairs(count: int = 5) -> list[dict]:
             response = await client.post(
                 f"{OLLAMA_BASE}/api/chat",
                 json={
-                    "model": "gemma4:31b-cloud",
+                    "model": GEMMA_MODEL,
                     "messages": [
                         {"role": "system", "content": CURRENT_AFFAIRS_PROMPT.format(count=count)},
                         {"role": "user", "content": search_block}

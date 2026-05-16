@@ -1,8 +1,44 @@
 # ScorvoAI — A Personal AI Tutor for India's 30 Million Government Exam Aspirants
 
-**Subtitle:** Powered by Gemma 4 (`gemma4:31b-cloud`) running locally via Ollama, with grounded web search for real-time current affairs.
+**Subtitle:** Built with Google's **Gemma 4** (`gemma4:31b-cloud`) running locally via Ollama, with grounded web search for real-time current affairs.
 
-**Tracks:** Main · Impact (Future of Education + Digital Equity & Inclusivity) · Special Technology (Ollama)
+---
+
+## 🏆 Tracks Entered
+
+| Track | Why |
+| ----- | --- |
+| **Main Track** | Best overall project — vision, execution, real-world impact |
+| **Impact · Future of Education** | Reimagines learning with multi-tool agents that adapt to each student |
+| **Impact · Digital Equity & Inclusivity** | Free AI tutoring for 30 M aspirants regardless of geography/income |
+| **Special Tech · Ollama** | Showcases Gemma 4 served locally through Ollama (open-source stack) |
+
+## ✅ Submission Checklist
+
+- **Kaggle Writeup** — this document (≈ 1,450 words, under the 1,500 cap)
+- **Public Code Repository** — https://github.com/abhi9716/ScorvoAI (Apache 2.0)
+- **Public Video** — `<YouTube link to be added>` (3 min, see [`VIDEO_SCRIPT.md`](VIDEO_SCRIPT.md))
+- **Live Demo** — `<APK download link>` + `<live backend URL>` (deployment plan in [`DEPLOYMENT.md`](DEPLOYMENT.md))
+- **Cover Image** — `<media gallery>`
+
+## 🧪 How Judges Can Verify Gemma 4 Is Real
+
+The model tag is defined **once** at `backend/services/ai_service.py` line 13:
+```python
+GEMMA_MODEL = os.getenv("GEMMA_MODEL", "gemma4:31b-cloud")
+```
+Every generative endpoint (`/chat`, `/solve`, `/quiz`, `/lessons`, `/current-affairs`) calls Ollama with this model. Override via env var to swap (e.g. `GEMMA_MODEL=gemma4:e4b` for the edge variant).
+
+To verify locally:
+```bash
+git clone https://github.com/abhi9716/ScorvoAI.git
+cd ScorvoAI
+# follow README "Quick Start" → backend + flutter run
+# In a new terminal:
+curl -X POST http://localhost:8000/chat -H 'Content-Type: application/json' \
+  -d '{"question":"Explain Article 21 in 2 lines"}'
+# The response is generated live by Gemma 4 via Ollama.
+```
 
 ---
 

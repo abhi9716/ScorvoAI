@@ -1,0 +1,72 @@
+ScorvoAI
+Copyright 2026 ScorvoAI
+
+This product includes software developed by ScorvoAI, licensed under the
+Apache License, Version 2.0. See LICENSE for the full text.
+
+═══════════════════════════════════════════════════════════════════════════
+                    THIRD-PARTY MODELS AND SERVICES
+═══════════════════════════════════════════════════════════════════════════
+
+Built with Gemma — Google's open Gemma 4 family of models
+  https://ai.google.dev/gemma
+  Used via the model tag:  gemma4:31b-cloud
+  Use of Gemma is governed by the Gemma Terms of Use:
+    https://ai.google.dev/gemma/terms
+  We do not claim ownership of or any rights to the Gemma model itself.
+
+Ollama — local model serving
+  https://ollama.com
+  MIT License
+
+Ollama Cloud Web Search API
+  https://docs.ollama.com/capabilities/web-search
+  Used for grounded current-affairs retrieval. Subject to Ollama's Terms.
+
+═══════════════════════════════════════════════════════════════════════════
+                    OPEN-SOURCE DEPENDENCIES (mobile)
+═══════════════════════════════════════════════════════════════════════════
+
+Flutter SDK            — Google                       (BSD-3-Clause)
+firebase_core / auth   — Google                       (BSD-3-Clause)
+cloud_firestore        — Google                       (BSD-3-Clause)
+google_sign_in         — Google                       (BSD-3-Clause)
+google_mlkit_text_recognition — Google                (MIT)
+flutter_riverpod       — Remi Rousselet               (MIT)
+fl_chart               — Iman Khoshabi                (MIT)
+gpt_markdown           — RajibChy                     (MIT)
+image_picker           — Flutter team                 (Apache-2.0)
+flutter_scalable_ocr   — adam-developer               (BSD-3-Clause)
+url_launcher           — Flutter team                 (BSD-3-Clause)
+http                   — Dart team                    (BSD-3-Clause)
+dio                    — Wendux                       (MIT)
+path_provider          — Flutter team                 (BSD-3-Clause)
+shared_preferences     — Flutter team                 (BSD-3-Clause)
+
+═══════════════════════════════════════════════════════════════════════════
+                    OPEN-SOURCE DEPENDENCIES (backend)
+═══════════════════════════════════════════════════════════════════════════
+
+FastAPI                — Sebastián Ramírez            (MIT)
+Uvicorn                — Encode                       (BSD-3-Clause)
+httpx                  — Encode                       (BSD-3-Clause)
+pydantic               — Samuel Colvin                (MIT)
+python-dotenv          — Saurabh Kumar                (BSD-3-Clause)
+pylatexenc             — Philippe Faist               (MIT)
+Pillow                 — Jeffrey A. Clark             (HPND)
+pytesseract            — Matthias Lee                 (Apache-2.0)
+
+═══════════════════════════════════════════════════════════════════════════
+                    SYLLABUS DATA SOURCES (public)
+═══════════════════════════════════════════════════════════════════════════
+
+UPSC Civil Services      https://upsc.gov.in
+SSC                      https://ssc.gov.in
+IBPS                     https://ibps.in
+SBI Careers              https://sbi.co.in/careers
+RRB                      https://rrbcdg.gov.in
+
+═══════════════════════════════════════════════════════════════════════════
+
+No user-identifying data is shared with third parties. See README.md
+"Security & Privacy" section for details.

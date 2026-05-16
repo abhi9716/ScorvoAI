@@ -3,7 +3,13 @@
 > AI-powered exam preparation platform for Indian government competitive exams (UPSC · SSC · IBPS/SBI · RRB · State PCS).
 
 <p align="center">
-  <strong>Dark-themed Flutter mobile app · FastAPI backend · Ollama LLM · Firebase</strong>
+  <strong>Dark-themed Flutter mobile app · FastAPI backend · Built with Gemma 4 · Firebase</strong>
+</p>
+
+<p align="center">
+  <a href="https://ai.google.dev/gemma"><img alt="Built with Gemma" src="https://img.shields.io/badge/Built%20with-Gemma%204-6366f1"></a>
+  <a href="https://ollama.com"><img alt="Served via Ollama" src="https://img.shields.io/badge/Served%20via-Ollama-000000"></a>
+  <a href="LICENSE"><img alt="License: Apache 2.0" src="https://img.shields.io/badge/License-Apache%202.0-blue"></a>
 </p>
 
 ---
@@ -281,10 +287,22 @@ flutter run
 
 ## 📜 License
 
-Proprietary — © 2026 ScorvoAI. All rights reserved.
+ScorvoAI source code is licensed under the **Apache License 2.0** — see [`LICENSE`](LICENSE).
+
+Use of the **Gemma 4** model is separately governed by the **Gemma Terms of Use** — https://ai.google.dev/gemma/terms. ScorvoAI does not bundle or redistribute the Gemma weights; it loads them at runtime via Ollama.
+
+Third-party attributions are listed in [`NOTICE`](NOTICE).
+
+---
+
+## 🤖 Built with Gemma
+
+This project is built on Google's open **Gemma 4** family of models (`gemma4:31b-cloud`), served locally through [Ollama](https://ollama.com). The model tag is centralised in `backend/services/ai_service.py` (constant `GEMMA_MODEL`) so it can be overridden via the `GEMMA_MODEL` env var. All generative features — AI Tutor, quiz generation, micro-lessons, solver, current-affairs extraction — invoke Gemma 4 through this single constant.
+
+Submitted to the **Gemma 4 Impact Challenge** (May 2026). See [`docs/SUBMISSION.md`](docs/SUBMISSION.md) for the competition writeup.
 
 ---
 
 ## 🙏 Acknowledgements
 
-Syllabus references: [UPSC](https://upsc.gov.in), [SSC](https://ssc.gov.in), [IBPS](https://ibps.in), [SBI Careers](https://sbi.co.in/careers), [RRB](https://rrbcdg.gov.in). LLM: [Ollama](https://ollama.com). Charts: [fl_chart](https://pub.dev/packages/fl_chart). Markdown: [gpt_markdown](https://pub.dev/packages/gpt_markdown).
+Syllabus references: [UPSC](https://upsc.gov.in), [SSC](https://ssc.gov.in), [IBPS](https://ibps.in), [SBI Careers](https://sbi.co.in/careers), [RRB](https://rrbcdg.gov.in). LLM: [Gemma 4](https://ai.google.dev/gemma) via [Ollama](https://ollama.com). Charts: [fl_chart](https://pub.dev/packages/fl_chart). Markdown: [gpt_markdown](https://pub.dev/packages/gpt_markdown). Full third-party list in [`NOTICE`](NOTICE).
