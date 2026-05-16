@@ -60,14 +60,27 @@ cd ScorvoAI
 cd backend
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-export OLLAMA_API_KEY=oa_xxx                # required for live current affairs
-export CORS_ORIGINS="*"                     # tighten in production
+```
+
+**Create `backend/.env`** (gitignored) — copy this template and fill in your values:
+
+```bash
+# backend/.env
+OLLAMA_API_KEY=oa_xxx           # Get from https://ollama.com/settings/keys (required for live news)
+CORS_ORIGINS=*                  # Comma-separated; tighten to your domain(s) in production
+# Optional:
+# OLLAMA_BASE=http://localhost:11434
+```
+
+Then run:
+
+```bash
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 Verify: `curl http://localhost:8000/health` → `{"status":"ok"}`
 
-### 3. Firebase
+### 3. Firebase (auth + Firestore)
 
 ```bash
 # install once
@@ -77,15 +90,25 @@ dart pub global activate flutterfire_cli
 cd mobile
 firebase login
 flutterfire configure --project=your-firebase-project-id
-# generates lib/firebase_options.dart and android/app/google-services.json
 ```
+
+This **auto-generates two gitignored secret files**:
+
+| File                                            | Purpose                                  |
+| ----------------------------------------------- | ---------------------------------------- |
+| `mobile/lib/firebase_options.dart`              | Firebase SDK config for Flutter          |
+| `mobile/android/app/google-services.json`       | Firebase config for Android (gms plugin) |
+
+If you ever delete them, just re-run `flutterfire configure` to regenerate.
 
 In the Firebase Console:
 1. **Authentication → Sign-in method** → enable Google
 2. **Firestore Database** → create (production mode) → paste the rules from [`docs/LLD.md`](docs/LLD.md) §3.4
-3. **Project settings → Android app** → add **SHA-1 and SHA-256** fingerprints
+3. **Project settings → Android app** → add **SHA-1 and SHA-256** fingerprints:
    ```bash
    cd mobile/android && ./gradlew signingReport
+   # Copy both SHA1 and SHA-256 lines from the `debug` variant block.
+   # For release builds, add the SHAs from your upload keystore too.
    ```
 
 ### 4. Configure API base URL
@@ -104,6 +127,59 @@ const apiBaseUrl = 'http://10.0.2.2:8000';   // Android emulator → host
 cd mobile
 flutter pub get
 flutter run
+```
+
+---
+
+## 🔐 Required Secret Files (Reference)
+
+All of these are **gitignored** — clone the repo, then create or generate each one before building.
+
+| # | File / Var | Where it goes | How to obtain | Required for |
+| - | ---------- | ------------- | ------------- | ------------ |
+| 1 | `OLLAMA_API_KEY` | `backend/.env` *(env var)* | https://ollama.com/settings/keys (free) | Live current affairs (web search) |
+| 2 | `backend/.env` | `backend/.env` | Create from template above | Backend runtime config |
+| 3 | `mobile/lib/firebase_options.dart` | Mobile lib root | `flutterfire configure --project=<id>` | Firebase init in Flutter |
+| 4 | `mobile/android/app/google-services.json` | Android app module | `flutterfire configure` (above) generates it | Firebase on Android |
+| 5 | `mobile/ios/Runner/GoogleService-Info.plist` | iOS Runner *(future)* | `flutterfire configure` (above) generates it | Firebase on iOS |
+| 6 | `mobile/android/key.properties` | Android root | Manually — see template below | Release signing |
+| 7 | Upload keystore `.jks` | Anywhere safe (referenced by `key.properties`) | `keytool -genkey ...` — see Deployment doc | Release signing |
+| 8 | SHA-1 + SHA-256 fingerprints | Firebase Console → Android app | `cd mobile/android && ./gradlew signingReport` | Google Sign-In to work |
+
+### Template: `backend/.env`
+
+```bash
+OLLAMA_API_KEY=oa_xxxxxxxxxxxxxxxxxxxxxxxx
+CORS_ORIGINS=*
+# OLLAMA_BASE=http://localhost:11434
+```
+
+### Template: `mobile/android/key.properties` (for release builds only)
+
+```properties
+storePassword=YOUR_STORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
+keyAlias=upload
+storeFile=/absolute/path/to/scorvoai-upload.jks
+```
+
+### Creating the upload keystore
+
+```bash
+keytool -genkey -v -keystore ~/scorvoai-upload.jks \
+  -keyalg RSA -keysize 2048 -validity 10000 \
+  -alias upload
+```
+
+⚠️ **Back up your keystore + passwords somewhere safe.** Losing them means you cannot update the published app and will need to publish a new app from scratch.
+
+### Verify nothing leaks
+
+Before any `git push`, run:
+
+```bash
+git status --porcelain | grep -iE 'google-services\.json|firebase_options\.dart|\.env$|key\.properties|\.jks$|\.keystore$'
+# Should print nothing — if it does, those files would be committed.
 ```
 
 ---
