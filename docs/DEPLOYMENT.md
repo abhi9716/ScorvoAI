@@ -1,0 +1,312 @@
+# ScorvoAI — Production Deployment Guide
+
+End-to-end checklist for shipping ScorvoAI to the **Google Play Store** with a production backend.
+
+---
+
+## 1. Pre-flight checklist
+
+| Item | Status |
+| ---- | ------ |
+| Firebase project on the **Blaze** plan (Spark works for low volume but reads/writes are capped) | ☐ |
+| Ollama running on a dedicated server with `gemma4:31b-cloud` pulled | ☐ |
+| Ollama Cloud API key issued at https://ollama.com/settings/keys | ☐ |
+| Backend hosted with HTTPS (Cloud Run / Railway / Fly.io / a VPS with nginx + Let's Encrypt) | ☐ |
+| Domain configured (e.g. `api.scorvo.ai`) | ☐ |
+| Play Console developer account created (USD 25 one-time fee) | ☐ |
+| App icon (`1024 × 1024` PNG, no alpha) | ☐ |
+| Feature graphic (`1024 × 500`) | ☐ |
+| Screenshots: phone (≥ 2, max 8) at 1080 × 1920 or higher | ☐ |
+| Privacy policy URL hosted on a public website | ☐ |
+
+---
+
+## 2. Backend — production
+
+### 2.1 Recommended host: Cloud Run / Railway
+
+Example **Dockerfile** for the backend:
+
+```Dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 8000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
+```
+
+Build & deploy (Cloud Run):
+
+```bash
+gcloud builds submit --tag gcr.io/<project>/scorvoai-api
+gcloud run deploy scorvoai-api \
+  --image gcr.io/<project>/scorvoai-api \
+  --platform managed --region asia-south1 \
+  --set-env-vars "OLLAMA_API_KEY=oa_xxx,CORS_ORIGINS=https://app.scorvo.ai" \
+  --allow-unauthenticated
+```
+
+### 2.2 Required env vars
+
+```
+OLLAMA_API_KEY=oa_xxx           # Required for real current affairs
+CORS_ORIGINS=https://...        # Tighten from "*"
+```
+
+### 2.3 Ollama hosting
+
+`gemma4:31b-cloud` needs roughly **20–30 GB RAM**. Recommended:
+- GPU VPS (Hetzner, Lambda Labs, RunPod) — 1× NVIDIA A10 (24 GB) or T4 minimum
+- Pin Ollama to a stable IP; backend connects via `OLLAMA_BASE` (set as env var if remote)
+
+### 2.4 Firewall
+
+Open only:
+- TCP **443** (your backend HTTPS)
+- Outbound to Firestore + ollama.com
+
+---
+
+## 3. Mobile — release build
+
+### 3.1 Create upload keystore
+
+```bash
+keytool -genkey -v -keystore ~/scorvoai-upload.jks \
+  -keyalg RSA -keysize 2048 -validity 10000 \
+  -alias upload
+```
+
+Store the **passwords + keystore file** somewhere safe and *backed up*. **Losing this means you can't update the app.**
+
+### 3.2 Wire signing config
+
+Create `mobile/android/key.properties` (add to `.gitignore`):
+
+```properties
+storePassword=...
+keyPassword=...
+keyAlias=upload
+storeFile=/absolute/path/to/scorvoai-upload.jks
+```
+
+Update `mobile/android/app/build.gradle.kts` — add **above** the `android {}` block:
+
+```kotlin
+import java.util.Properties
+import java.io.FileInputStream
+
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+```
+
+Inside `android {}`, add:
+
+```kotlin
+signingConfigs {
+    create("release") {
+        keyAlias = keystoreProperties["keyAlias"] as String?
+        keyPassword = keystoreProperties["keyPassword"] as String?
+        storeFile = keystoreProperties["storeFile"]?.let { file(it as String) }
+        storePassword = keystoreProperties["storePassword"] as String?
+    }
+}
+```
+
+Replace the existing `release` build type with:
+
+```kotlin
+buildTypes {
+    release {
+        signingConfig = signingConfigs.getByName("release")
+        isMinifyEnabled = true
+        isShrinkResources = true
+        proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+    }
+}
+```
+
+### 3.3 Production AndroidManifest
+
+In `mobile/android/app/src/main/AndroidManifest.xml`:
+
+1. **Remove** `android:usesCleartextTraffic="true"` — production must be HTTPS.
+2. **Change** `android:label="scorvoai"` → `android:label="ScorvoAI"`.
+3. **Remove** `WRITE_EXTERNAL_STORAGE` and `READ_EXTERNAL_STORAGE` — Flutter's `image_picker` uses scoped storage on Android 13+; keep `CAMERA` only.
+4. **Add** an `android:exported` value to `MainActivity` (already present in latest scaffold).
+
+Optional — if you must call non-HTTPS endpoints, create `android/app/src/main/res/xml/network_security_config.xml` and reference it via `android:networkSecurityConfig`.
+
+### 3.4 Update version
+
+`mobile/pubspec.yaml`:
+
+```yaml
+version: 1.0.0+1   # versionName+versionCode — bump for every release
+```
+
+### 3.5 Update API URL
+
+`mobile/lib/config.dart`:
+
+```dart
+const apiBaseUrl = 'https://api.scorvo.ai';   // production
+```
+
+### 3.6 Update launcher icon
+
+```bash
+# add to dev_dependencies in pubspec.yaml:
+#   flutter_launcher_icons: ^0.13.1
+# add at root of pubspec.yaml:
+#   flutter_launcher_icons:
+#     android: true
+#     image_path: "assets/icon.png"
+dart run flutter_launcher_icons
+```
+
+### 3.7 Build the App Bundle
+
+```bash
+cd mobile
+flutter clean
+flutter pub get
+flutter build appbundle --release
+# Output: build/app/outputs/bundle/release/app-release.aab
+```
+
+Verify the AAB:
+
+```bash
+bundletool build-apks --bundle=app-release.aab --output=test.apks
+bundletool install-apks --apks=test.apks
+```
+
+---
+
+## 4. Play Store listing
+
+### 4.1 Required assets
+
+| Asset            | Spec                                        |
+| ---------------- | ------------------------------------------- |
+| App icon         | 512 × 512 PNG, no transparency, no rounding |
+| Feature graphic  | 1024 × 500 PNG/JPG                          |
+| Phone screenshots| 2–8 images, 1080 × 1920 (min)               |
+| Short description| ≤ 80 chars                                  |
+| Full description | ≤ 4000 chars                                |
+| Privacy policy   | Public URL                                  |
+
+### 4.2 Suggested copy
+
+**Short description (80 chars):**
+> AI-powered exam prep for UPSC, SSC, Banking, Railway with adaptive quizzes.
+
+**Full description outline:**
+- Hook (1-2 lines)
+- "What you get" bullet list
+- How it adapts to you (Smart Practice, RAG-powered AI tutor)
+- Coverage (12 exams, full syllabi)
+- Privacy
+- Contact / support email
+
+### 4.3 Content rating
+
+Use Play Console's IARC questionnaire. ScorvoAI is **Everyone (E)** — no violence, no gambling.
+
+### 4.4 Data safety
+
+Declare in Play Console:
+- **Collected:** Name, email, photo (Google account); App activity (quiz scores, notes content).
+- **Shared:** None with third parties.
+- **Purpose:** Account management + app functionality.
+- **Encrypted in transit:** Yes.
+- **User can request deletion:** Yes (via in-app Sign out + email support).
+
+### 4.5 Release tracks
+
+Recommended rollout:
+
+1. **Internal testing** (your team) → smoke test
+2. **Closed testing** (100 trusted users) → 1-2 weeks
+3. **Open testing** (public beta) → 1-2 weeks
+4. **Production** → 10 % → 25 % → 50 % → 100 % staged rollout
+
+---
+
+## 5. Firestore — production rules
+
+Paste into Firebase Console → Firestore → Rules:
+
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    match /users/{uid}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+    match /lessons/{key} {
+      allow read, write: if request.auth != null;
+    }
+    match /current_affairs/{date} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+```
+
+**Recommended indexes** (Firestore creates them on first query, or add manually):
+- `users/{uid}/quiz_results` — composite (`timestamp` desc)
+- `users/{uid}/ai_notes` — composite (`created_at` desc)
+- `users/{uid}/viewed_lessons` — composite (`last_viewed` desc)
+
+---
+
+## 6. Post-launch monitoring
+
+| Tool                | What for |
+| ------------------- | -------- |
+| **Firebase Crashlytics** | Mobile crashes (enable in `pubspec.yaml` + `main.dart`) |
+| **Cloud Run logs**       | Backend errors |
+| **Firebase Auth dashboard** | Sign-up funnel |
+| **Firestore usage dashboard** | Read/write costs |
+| **Play Console vitals** | ANRs, crash rate |
+
+---
+
+## 7. Update workflow
+
+```bash
+# 1. Bump version in pubspec.yaml (1.0.0+1 → 1.0.1+2)
+# 2. Build
+flutter build appbundle --release
+# 3. Upload AAB in Play Console → Production → Create new release
+# 4. Staged rollout starting at 10%
+```
+
+Backend deploys via your CI/CD (Cloud Build / GitHub Actions / Railway auto-deploy on push).
+
+---
+
+## 8. Rollback
+
+- **Mobile:** Play Console → "Halt rollout" if crash rate spikes; revert to previous release.
+- **Backend:** Cloud Run keeps revisions — `gcloud run services update-traffic scorvoai-api --to-revisions=<prev>=100`.
+- **Firestore rules:** Version-controlled in console.
+
+---
+
+## 9. Known gotchas
+
+| Issue | Fix |
+| ----- | --- |
+| Google Sign-In returns null on release build | Add **SHA-256** (not just SHA-1) of your **upload** key to Firebase project |
+| `MissingPluginException` after build | `flutter clean && flutter pub get && flutter build appbundle --release` |
+| Black screen on launch | Check `firebase_options.dart` is committed and the project ID matches |
+| Slow first chat reply | Pre-warm Ollama with a dummy request on backend startup |
+| Current affairs failing | Check `OLLAMA_API_KEY` is set in backend env |
