@@ -416,7 +416,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff0f4ff),
+      backgroundColor: AppColors.surfaceHigh,
       appBar: _buildAppBar(),
       body: Column(
         children: [
@@ -462,7 +462,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
       flexibleSpace: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [AppColors.indigoBright, Color(0xff0d47a1)],
+            colors: [AppColors.indigoBright, AppColors.indigo],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -514,7 +514,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
             height: 90,
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [AppColors.indigoBright, Color(0xff0d47a1)],
+                colors: [AppColors.indigoBright, AppColors.indigo],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -558,7 +558,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: const Color(0xffe0e7ff)),
+                    border: Border.all(color: AppColors.surfaceLine),
                     boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 6, offset: const Offset(0, 2))],
                   ),
                   child: Row(
@@ -571,7 +571,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                           style: const TextStyle(fontSize: 14, color: AppColors.textPrimary, height: 1.3),
                         ),
                       ),
-                      const Icon(Icons.chevron_right_rounded, size: 18, color: Color(0xffcccccc)),
+                      const Icon(Icons.chevron_right_rounded, size: 18, color: AppColors.textTertiary),
                     ],
                   ),
                 ),
@@ -601,7 +601,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
       height: size,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [AppColors.indigoBright, Color(0xff0d47a1)],
+          colors: [AppColors.indigoBright, AppColors.indigo],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -646,7 +646,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                         child: Container(
                           width: 8, height: 8,
                           decoration: BoxDecoration(
-                            color: Color.lerp(const Color(0xffbbbbbb), AppColors.indigoBright, bounce)!,
+                            color: Color.lerp(AppColors.textTertiary, AppColors.indigoBright, bounce)!,
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -749,16 +749,16 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                             margin: const EdgeInsets.symmetric(vertical: 8),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: const Color(0xffe0e7ff)),
+                              border: Border.all(color: AppColors.surfaceLine),
                             ),
                             clipBehavior: Clip.antiAlias,
                             child: Table(
-                              border: TableBorder.all(color: const Color(0xffe0e7ff), width: 0.5),
+                              border: TableBorder.all(color: AppColors.surfaceLine, width: 0.5),
                               defaultColumnWidth: const FlexColumnWidth(),
                               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                               children: rows.map((row) => TableRow(
                                 decoration: row.isHeader
-                                    ? const BoxDecoration(color: Color(0xfff0f4ff))
+                                    ? const BoxDecoration(color: AppColors.surfaceHigh)
                                     : null,
                                 children: row.fields.map((field) => Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -808,9 +808,9 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 13, color: const Color(0xffbbbbbb)),
+            Icon(icon, size: 13, color: AppColors.textTertiary),
             const SizedBox(width: 3),
-            Text(label, style: const TextStyle(fontSize: 11, color: Color(0xffbbbbbb))),
+            Text(label, style: const TextStyle(fontSize: 11, color: AppColors.textTertiary)),
           ],
         ),
       ),
@@ -835,9 +835,9 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: const Color(0xfff0f4ff),
+                    color: AppColors.surfaceHigh,
                     borderRadius: BorderRadius.circular(24),
-                    border: Border.all(color: const Color(0xffe0e7ff)),
+                    border: Border.all(color: AppColors.surfaceLine),
                   ),
                   child: TextField(
                     controller: _inputController,
@@ -846,7 +846,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                     textCapitalization: TextCapitalization.sentences,
                     decoration: const InputDecoration(
                       hintText: 'Ask anything about your exam...',
-                      hintStyle: TextStyle(color: Color(0xffaaaaaa), fontSize: 14),
+                      hintStyle: TextStyle(color: AppColors.textTertiary, fontSize: 14),
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     ),
@@ -863,7 +863,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                   gradient: LinearGradient(
                     colors: _isStreaming
                         ? [Colors.grey.shade300, Colors.grey.shade300]
-                        : [AppColors.indigoBright, const Color(0xff0d47a1)],
+                        : [AppColors.indigoBright, AppColors.indigo],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),

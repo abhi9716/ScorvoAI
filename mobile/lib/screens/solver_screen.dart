@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scorvoai/theme/app_theme.dart';
 import 'package:flutter/services.dart';
 import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:image_picker/image_picker.dart';
@@ -104,7 +105,7 @@ class _SolverScreenState extends State<SolverScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff0f4ff),
+      backgroundColor: AppColors.surfaceHigh,
       appBar: AppBar(
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -168,7 +169,7 @@ class _SolverScreenState extends State<SolverScreen> {
                       const SizedBox(width: 8),
                       const Expanded(
                         child: Text('Enter your question',
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Color(0xff1a1a2e))),
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
                       ),
                       // OCR scan buttons
                       if (_scanning)
@@ -201,10 +202,10 @@ class _SolverScreenState extends State<SolverScreen> {
                             child: Container(
                               padding: const EdgeInsets.all(7),
                               decoration: BoxDecoration(
-                                color: const Color(0xff1a73e8).withValues(alpha: 0.1),
+                                color: AppColors.indigoBright.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: const Icon(Icons.photo_library_rounded, color: Color(0xff1a73e8), size: 20),
+                              child: const Icon(Icons.photo_library_rounded, color: AppColors.indigoBright, size: 20),
                             ),
                           ),
                         ),
@@ -225,14 +226,14 @@ class _SolverScreenState extends State<SolverScreen> {
                     textCapitalization: TextCapitalization.sentences,
                     decoration: InputDecoration(
                       hintText: 'Type a question or use the camera to scan it...',
-                      hintStyle: const TextStyle(color: Color(0xffaaaaaa), fontSize: 14),
+                      hintStyle: const TextStyle(color: AppColors.textTertiary, fontSize: 14),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: Color(0xffe0e7ff)),
+                        borderSide: const BorderSide(color: AppColors.surfaceLine),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: Color(0xffe0e7ff)),
+                        borderSide: const BorderSide(color: AppColors.surfaceLine),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -288,10 +289,10 @@ class _SolverScreenState extends State<SolverScreen> {
                       ),
                       const SizedBox(height: 16),
                       const Text('Solving your question...',
-                          style: TextStyle(fontSize: 15, color: Color(0xff666666), fontWeight: FontWeight.w500)),
+                          style: TextStyle(fontSize: 15, color: AppColors.textSecondary, fontWeight: FontWeight.w500)),
                       const SizedBox(height: 4),
                       const Text('This may take a few seconds',
-                          style: TextStyle(fontSize: 13, color: Color(0xffaaaaaa))),
+                          style: TextStyle(fontSize: 13, color: AppColors.textTertiary)),
                     ],
                   ),
                 ),
@@ -311,7 +312,7 @@ class _SolverScreenState extends State<SolverScreen> {
                   ),
                   const SizedBox(width: 10),
                   const Text('Solution',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: Color(0xff1a1a2e))),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
                   const Spacer(),
                   TextButton.icon(
                     onPressed: _copy,
@@ -333,7 +334,7 @@ class _SolverScreenState extends State<SolverScreen> {
                 ),
                 child: GptMarkdown(
                   _solution!,
-                  style: const TextStyle(fontSize: 14.5, color: Color(0xff1a1a2e), height: 1.6),
+                  style: const TextStyle(fontSize: 14.5, color: AppColors.textPrimary, height: 1.6),
                   useDollarSignsForLatex: false,
                   onLinkTap: (url, _) => launchUrlString(url),
                   tableBuilder: (context, rows, textStyle, config) {
@@ -361,7 +362,7 @@ class _SolverScreenState extends State<SolverScreen> {
                                               style: TextStyle(
                                                 fontSize: 13,
                                                 fontWeight: row.isHeader ? FontWeight.w600 : FontWeight.w400,
-                                                color: const Color(0xff333333),
+                                                color: AppColors.textPrimary,
                                               ),
                                               useDollarSignsForLatex: false,
                                             ),

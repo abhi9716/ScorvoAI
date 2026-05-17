@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:scorvoai/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -222,13 +223,13 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
         Color color;
         double size;
         if (isCurrent) {
-          color = const Color(0xff1a73e8);
+          color = AppColors.indigoBright;
           size = 12;
         } else if (arrived && _answers.containsKey(i)) {
           color = const Color(0xff34a853);
           size = 10;
         } else if (arrived) {
-          color = const Color(0xffbbbbbb);
+          color = AppColors.textTertiary;
           size = 8;
         } else {
           color = Colors.transparent;
@@ -249,7 +250,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: arrived ? color : Colors.transparent,
-              border: arrived ? null : Border.all(color: const Color(0xffcccccc), width: 2),
+              border: arrived ? null : Border.all(color: AppColors.textTertiary, width: 2),
             ),
           ),
         );
@@ -278,7 +279,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
               spacing: 6,
               runSpacing: 4,
               children: [
-                _pill(q['subject'] ?? 'Mixed', const Color(0xff1a73e8), const Color(0xffe3f2fd)),
+                _pill(q['subject'] ?? 'Mixed', AppColors.indigoBright, const Color(0xffe3f2fd)),
                 _pill(q['chapter'] ?? 'General', const Color(0xff9c27b0), const Color(0xfff3e5f5)),
                 _pill(q['difficulty']?.toString().isNotEmpty == true ? (q['difficulty'] as String).toUpperCase() : 'MIXED', _difficultyColor(q['difficulty']), _difficultyColor(q['difficulty']).withValues(alpha: 0.1)),
                 if (q['ai_generated'] == true) _pill('AI', const Color(0xff34a853), const Color(0xffe8f5e9)),
@@ -307,13 +308,13 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
                 } else {
                   bg = Colors.grey.shade50;
                   border = Colors.grey.shade200;
-                  text = const Color(0xff999999);
+                  text = AppColors.textTertiary;
                 }
               } else {
                 final selected = selectedIdx == optIdx;
-                bg = selected ? const Color(0xff1a73e8) : Colors.grey.shade50;
-                border = selected ? const Color(0xff1a73e8) : Colors.grey.shade200;
-                text = selected ? Colors.white : const Color(0xff333333);
+                bg = selected ? AppColors.indigoBright : Colors.grey.shade50;
+                border = selected ? AppColors.indigoBright : Colors.grey.shade200;
+                text = selected ? Colors.white : AppColors.textPrimary;
                 weight = selected ? FontWeight.w600 : FontWeight.normal;
               }
 
@@ -400,8 +401,8 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
       style: OutlinedButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        foregroundColor: const Color(0xff1a73e8),
-        side: const BorderSide(color: Color(0xff1a73e8)),
+        foregroundColor: AppColors.indigoBright,
+        side: const BorderSide(color: AppColors.indigoBright),
       ),
     );
 
@@ -423,7 +424,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
                     ? ElevatedButton(
                         onPressed: () => setState(() => _reviewing = false),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff1a73e8),
+                          backgroundColor: AppColors.indigoBright,
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           elevation: 4,
@@ -490,7 +491,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
                             children: [
                               SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2)),
                               SizedBox(width: 8),
-                              Text('Generating...', style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff666666))),
+                              Text('Generating...', style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
                             ],
                           ),
                         )
@@ -516,10 +517,10 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
   Widget build(BuildContext context) {
     final isMixed = widget.mode == QuizMode.mixed;
     final accentColor = isMixed ? const Color(0xfffbbc05) : const Color(0xff34a853);
-    final fgColor = isMixed ? const Color(0xff333333) : Colors.white;
+    final fgColor = isMixed ? AppColors.textPrimary : Colors.white;
 
     return Scaffold(
-      backgroundColor: const Color(0xfff5f7fa),
+      backgroundColor: AppColors.bg,
       appBar: AppBar(
         title: AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
@@ -569,7 +570,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
                     const SizedBox(height: 16),
                     Text(
                       'Generating question 1 of ${widget.count}...',
-                      style: const TextStyle(fontSize: 16, color: Color(0xff666666)),
+                      style: const TextStyle(fontSize: 16, color: AppColors.textSecondary),
                     ),
                   ],
                 ),
@@ -585,7 +586,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
                           'Question ${_currentIndex + 1} of ${widget.count}',
-                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Color(0xff999999)),
+                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppColors.textTertiary),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -605,7 +606,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
                               const SizedBox(width: 8),
                               Text(
                                 'Loading question ${_questions.length + 1} of ${widget.count}...',
-                                style: const TextStyle(fontSize: 12, color: Color(0xff999999)),
+                                style: const TextStyle(fontSize: 12, color: AppColors.textTertiary),
                               ),
                             ],
                           ),
@@ -667,7 +668,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
             tween: Tween(begin: 0.0, end: pct.toDouble()),
             duration: const Duration(milliseconds: 800),
             curve: Curves.easeOutCubic,
-            builder: (context, value, child) => Text('${value.round()}%', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: Color(0xff666666))),
+            builder: (context, value, child) => Text('${value.round()}%', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
           ),
           const SizedBox(height: 8),
           TweenAnimationBuilder<double>(
@@ -681,7 +682,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
             tween: Tween(begin: 0.0, end: 1.0),
             duration: const Duration(milliseconds: 600),
             builder: (context, value, child) => Transform.translate(offset: Offset(0, 20 * (1 - value)), child: Opacity(opacity: value, child: child)),
-            child: SizedBox(width: double.infinity, child: ElevatedButton(onPressed: _loadQuestions, style: ElevatedButton.styleFrom(backgroundColor: const Color(0xff1a73e8), padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))), child: const Text('New Quiz', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700)))),
+            child: SizedBox(width: double.infinity, child: ElevatedButton(onPressed: _loadQuestions, style: ElevatedButton.styleFrom(backgroundColor: AppColors.indigoBright, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))), child: const Text('New Quiz', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700)))),
           ),
           const SizedBox(height: 12),
           TweenAnimationBuilder<double>(
@@ -692,7 +693,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
               onPressed: () => setState(() { _reviewing = true; _currentIndex = 0; }),
               icon: const Icon(Icons.visibility_outlined),
               label: const Text('Review Answers'),
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), foregroundColor: const Color(0xff1a73e8), side: const BorderSide(color: Color(0xff1a73e8)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+              style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), foregroundColor: AppColors.indigoBright, side: const BorderSide(color: AppColors.indigoBright), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
             )),
           ),
           const SizedBox(height: 12),
@@ -700,7 +701,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
             tween: Tween(begin: 0.0, end: 1.0),
             duration: const Duration(milliseconds: 700),
             builder: (context, value, child) => Transform.translate(offset: Offset(0, 20 * (1 - value)), child: Opacity(opacity: value, child: child)),
-            child: SizedBox(width: double.infinity, child: OutlinedButton(onPressed: () => Navigator.of(context).pop(), style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))), child: const Text('Back to Menu', style: TextStyle(color: Color(0xff1a73e8), fontSize: 16, fontWeight: FontWeight.w700)))),
+            child: SizedBox(width: double.infinity, child: OutlinedButton(onPressed: () => Navigator.of(context).pop(), style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))), child: const Text('Back to Menu', style: TextStyle(color: AppColors.indigoBright, fontSize: 16, fontWeight: FontWeight.w700)))),
           ),
         ],
       ),

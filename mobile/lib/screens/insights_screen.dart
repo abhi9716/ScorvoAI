@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scorvoai/theme/app_theme.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scorvoai/services/firestore_service.dart';
@@ -44,14 +45,14 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
   Widget build(BuildContext context) {
     final total = _data?['total_quizzes'] as int? ?? 0;
     return Scaffold(
-      backgroundColor: const Color(0xfff5f7fa),
+      backgroundColor: AppColors.bg,
       appBar: AppBar(
-        title: const Text('Insights', style: TextStyle(fontWeight: FontWeight.w800, color: Color(0xff1a1a2e))),
-        backgroundColor: const Color(0xfff5f7fa),
+        title: const Text('Insights', style: TextStyle(fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
+        backgroundColor: AppColors.bg,
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh_rounded, color: Color(0xff1a73e8)),
+            icon: const Icon(Icons.refresh_rounded, color: AppColors.indigoBright),
             onPressed: _load,
           ),
         ],
@@ -59,11 +60,11 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
             ? null
             : TabBar(
                 controller: _tab,
-                labelColor: const Color(0xff1a73e8),
-                unselectedLabelColor: const Color(0xff999999),
+                labelColor: AppColors.indigoBright,
+                unselectedLabelColor: AppColors.textTertiary,
                 labelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
                 unselectedLabelStyle: const TextStyle(fontSize: 12),
-                indicatorColor: const Color(0xff1a73e8),
+                indicatorColor: AppColors.indigoBright,
                 indicatorWeight: 2.5,
                 tabs: const [
                   Tab(text: 'Overview'),
@@ -111,10 +112,10 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
           _heroCard(avg, streak, total, best, passRate, totalQ),
           const SizedBox(height: 16),
           if (recentScores.length >= 2) ...[
-            _sectionHeader('Performance Trend', Icons.show_chart_rounded, const Color(0xff1a73e8)),
+            _sectionHeader('Performance Trend', Icons.show_chart_rounded, AppColors.indigoBright),
             const SizedBox(height: 6),
             const Text('Green dots = pass (≥60%), Red dots = fail — dashed line = 60% threshold',
-                style: TextStyle(fontSize: 11, color: Color(0xff999999))),
+                style: TextStyle(fontSize: 11, color: AppColors.textTertiary)),
             const SizedBox(height: 10),
             _trendChart(recentScores),
             const SizedBox(height: 16),
@@ -147,11 +148,11 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-            colors: [Color(0xff1a73e8), Color(0xff4285f4)],
+            colors: [AppColors.indigoBright, Color(0xff4285f4)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight),
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: const Color(0xff1a73e8).withValues(alpha: 0.3), blurRadius: 16, offset: const Offset(0, 8))],
+        boxShadow: [BoxShadow(color: AppColors.indigoBright.withValues(alpha: 0.3), blurRadius: 16, offset: const Offset(0, 8))],
       ),
       child: Column(
         children: [
@@ -236,7 +237,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
             show: true,
             drawVerticalLine: false,
             horizontalInterval: 25,
-            getDrawingHorizontalLine: (v) => FlLine(color: const Color(0xfff0f0f0), strokeWidth: 1),
+            getDrawingHorizontalLine: (v) => FlLine(color: AppColors.surfaceLine, strokeWidth: 1),
           ),
           borderData: FlBorderData(show: false),
           titlesData: FlTitlesData(
@@ -246,7 +247,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                 reservedSize: 32,
                 interval: 25,
                 getTitlesWidget: (v, _) =>
-                    Text('${v.toInt()}%', style: const TextStyle(fontSize: 9, color: Color(0xff999999))),
+                    Text('${v.toInt()}%', style: const TextStyle(fontSize: 9, color: AppColors.textTertiary)),
               ),
             ),
             bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -257,7 +258,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
             LineChartBarData(
               spots: spots,
               isCurved: true,
-              color: const Color(0xff1a73e8),
+              color: AppColors.indigoBright,
               barWidth: 2.5,
               dotData: FlDotData(
                 show: true,
@@ -269,7 +270,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                 ),
               ),
               belowBarData: BarAreaData(
-                  show: true, color: const Color(0xff1a73e8).withValues(alpha: 0.08)),
+                  show: true, color: AppColors.indigoBright.withValues(alpha: 0.08)),
             ),
             // Dashed 60% pass line
             LineChartBarData(
@@ -290,7 +291,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
     final bands = [
       ('0–25%', dist['0-25'] ?? 0, const Color(0xffea4335), 'Needs Work'),
       ('26–50%', dist['26-50'] ?? 0, const Color(0xfffbbc05), 'Below Avg'),
-      ('51–75%', dist['51-75'] ?? 0, const Color(0xff1a73e8), 'Good'),
+      ('51–75%', dist['51-75'] ?? 0, AppColors.indigoBright, 'Good'),
       ('76–100%', dist['76-100'] ?? 0, const Color(0xff34a853), 'Excellent'),
     ];
     return Container(
@@ -303,13 +304,13 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
             padding: const EdgeInsets.only(bottom: 12),
             child: Row(
               children: [
-                SizedBox(width: 52, child: Text(b.$1, style: const TextStyle(fontSize: 11, color: Color(0xff666666)))),
+                SizedBox(width: 52, child: Text(b.$1, style: const TextStyle(fontSize: 11, color: AppColors.textSecondary))),
                 Expanded(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: LinearProgressIndicator(
                       value: pct,
-                      backgroundColor: const Color(0xfff0f0f0),
+                      backgroundColor: AppColors.surfaceLine,
                       valueColor: AlwaysStoppedAnimation(b.$3),
                       minHeight: 10,
                     ),
@@ -323,7 +324,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                 const SizedBox(width: 4),
                 SizedBox(
                     width: 64,
-                    child: Text(b.$4, style: const TextStyle(fontSize: 10, color: Color(0xff999999)))),
+                    child: Text(b.$4, style: const TextStyle(fontSize: 10, color: AppColors.textTertiary))),
               ],
             ),
           );
@@ -342,7 +343,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
           final attempts = t['attempts'] as int? ?? 0;
           final c = isWeak
               ? Color.lerp(const Color(0xffea4335), const Color(0xfffbbc05), avg / 60) ?? color
-              : Color.lerp(const Color(0xff1a73e8), const Color(0xff34a853), (avg - 60).clamp(0, 40) / 40) ?? color;
+              : Color.lerp(AppColors.indigoBright, const Color(0xff34a853), (avg - 60).clamp(0, 40) / 40) ?? color;
           return Column(
             children: [
               if (e.key > 0) const Divider(height: 1, color: Color(0xfff5f5f5)),
@@ -364,9 +365,9 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(t['topic'] as String? ?? '',
-                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xff1a1a2e))),
+                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
                           Text('$attempts attempt${attempts == 1 ? '' : 's'}',
-                              style: const TextStyle(fontSize: 11, color: Color(0xff999999))),
+                              style: const TextStyle(fontSize: 11, color: AppColors.textTertiary)),
                         ],
                       ),
                     ),
@@ -376,7 +377,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                         borderRadius: BorderRadius.circular(4),
                         child: LinearProgressIndicator(
                           value: avg / 100,
-                          backgroundColor: const Color(0xfff0f0f0),
+                          backgroundColor: AppColors.surfaceLine,
                           valueColor: AlwaysStoppedAnimation(c),
                           minHeight: 6,
                         ),
@@ -466,10 +467,10 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                 ],
               ),
             ),
-          _sectionHeader('Subject Performance', Icons.subject_rounded, const Color(0xff1a73e8)),
+          _sectionHeader('Subject Performance', Icons.subject_rounded, AppColors.indigoBright),
           const SizedBox(height: 4),
           const Text('Sorted weakest → strongest',
-              style: TextStyle(fontSize: 11, color: Color(0xff999999))),
+              style: TextStyle(fontSize: 11, color: AppColors.textTertiary)),
           const SizedBox(height: 12),
           ...entries.map((e) {
             final avg = ((e.value as Map)['avg'] as num).toDouble();
@@ -494,7 +495,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                       children: [
                         Expanded(
                           child: Text(e.key,
-                              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Color(0xff1a1a2e))),
+                              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
                         ),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -511,7 +512,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                       borderRadius: BorderRadius.circular(4),
                       child: LinearProgressIndicator(
                         value: avg / 100,
-                        backgroundColor: const Color(0xfff0f0f0),
+                        backgroundColor: AppColors.surfaceLine,
                         valueColor: AlwaysStoppedAnimation(color),
                         minHeight: 8,
                       ),
@@ -520,7 +521,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                     Row(
                       children: [
                         Text('$total ${usingPerQuestion ? 'questions' : 'attempts'}',
-                            style: const TextStyle(fontSize: 11, color: Color(0xff999999))),
+                            style: const TextStyle(fontSize: 11, color: AppColors.textTertiary)),
                         if (correct != null) ...[
                           const Spacer(),
                           Text('$correct correct',
@@ -563,7 +564,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          _sectionHeader('Difficulty Breakdown', Icons.signal_cellular_alt_rounded, const Color(0xff1a73e8)),
+          _sectionHeader('Difficulty Breakdown', Icons.signal_cellular_alt_rounded, AppColors.indigoBright),
           const SizedBox(height: 12),
           ...sorted.map((key) {
             final v = diff[key] as Map;
@@ -597,20 +598,20 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                         children: [
                           Text(cfg.$3,
                               style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w700, color: Color(0xff1a1a2e))),
+                                  fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
                           const SizedBox(height: 6),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(4),
                             child: LinearProgressIndicator(
                               value: avg / 100,
-                              backgroundColor: const Color(0xfff0f0f0),
+                              backgroundColor: AppColors.surfaceLine,
                               valueColor: AlwaysStoppedAnimation(color),
                               minHeight: 7,
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text('$correct / $total correct',
-                              style: const TextStyle(fontSize: 11, color: Color(0xff999999))),
+                              style: const TextStyle(fontSize: 11, color: AppColors.textTertiary)),
                         ],
                       ),
                     ),
@@ -622,7 +623,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                             style: TextStyle(
                                 fontSize: 22, fontWeight: FontWeight.w800, color: color)),
                         const Text('avg score',
-                            style: TextStyle(fontSize: 10, color: Color(0xff999999))),
+                            style: TextStyle(fontSize: 10, color: AppColors.textTertiary)),
                       ],
                     ),
                   ],
@@ -650,7 +651,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
       color = const Color(0xffea4335);
     } else {
       tip = 'Good base! Practice more hard questions to boost your overall score.';
-      color = const Color(0xff1a73e8);
+      color = AppColors.indigoBright;
     }
     return Container(
       padding: const EdgeInsets.all(14),
@@ -738,7 +739,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                   Expanded(
                     child: Text(e.key,
                         style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xff1a1a2e))),
+                            fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
@@ -758,7 +759,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                       color: const Color(0xffe3f2fd), borderRadius: BorderRadius.circular(10)),
                   child: Text(subject,
                       style: const TextStyle(
-                          fontSize: 10, color: Color(0xff1a73e8), fontWeight: FontWeight.w500)),
+                          fontSize: 10, color: AppColors.indigoBright, fontWeight: FontWeight.w500)),
                 ),
               ],
               const SizedBox(height: 6),
@@ -766,14 +767,14 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                 borderRadius: BorderRadius.circular(3),
                 child: LinearProgressIndicator(
                   value: avg / 100,
-                  backgroundColor: const Color(0xfff0f0f0),
+                  backgroundColor: AppColors.surfaceLine,
                   valueColor: AlwaysStoppedAnimation(color),
                   minHeight: 5,
                 ),
               ),
               const SizedBox(height: 4),
               Text('$correct / $total correct',
-                  style: const TextStyle(fontSize: 11, color: Color(0xff999999))),
+                  style: const TextStyle(fontSize: 11, color: AppColors.textTertiary)),
             ],
           ),
         ),
@@ -785,7 +786,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
 
   Color _scoreColor(double avg) {
     if (avg >= 75) return const Color(0xff34a853);
-    if (avg >= 50) return const Color(0xff1a73e8);
+    if (avg >= 50) return AppColors.indigoBright;
     if (avg >= 35) return const Color(0xfffbbc05);
     return const Color(0xffea4335);
   }
@@ -800,7 +801,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
         ),
         const SizedBox(width: 8),
         Text(title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Color(0xff1a1a2e))),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
       ],
     );
   }
@@ -816,16 +817,16 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.hourglass_empty_rounded, size: 56, color: Color(0xffcccccc)),
+          const Icon(Icons.hourglass_empty_rounded, size: 56, color: AppColors.textTertiary),
           const SizedBox(height: 16),
           Text(title,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: Color(0xff444444))),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.textSecondary)),
           const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Text(sub,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 13, color: Color(0xff999999), height: 1.5)),
+                style: const TextStyle(fontSize: 13, color: AppColors.textTertiary, height: 1.5)),
           ),
         ],
       ),
@@ -840,16 +841,16 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
           Container(
             width: 90, height: 90,
             decoration: BoxDecoration(
-                color: const Color(0xff1a73e8).withValues(alpha: 0.08), shape: BoxShape.circle),
-            child: const Icon(Icons.analytics_rounded, size: 48, color: Color(0xff1a73e8)),
+                color: AppColors.indigoBright.withValues(alpha: 0.08), shape: BoxShape.circle),
+            child: const Icon(Icons.analytics_rounded, size: 48, color: AppColors.indigoBright),
           ),
           const SizedBox(height: 20),
           const Text('No insights yet',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: Color(0xff1a1a2e))),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
           const SizedBox(height: 8),
           const Text('Complete a quiz to see your\nperformance insights here',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: Color(0xff666666), height: 1.5)),
+              style: TextStyle(fontSize: 14, color: AppColors.textSecondary, height: 1.5)),
           const SizedBox(height: 32),
           ElevatedButton.icon(
             onPressed: () => Navigator.push(
@@ -858,7 +859,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                   builder: (_) => const QuizPlayScreen(mode: QuizMode.mixed, count: 5)),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xff1a73e8),
+              backgroundColor: AppColors.indigoBright,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

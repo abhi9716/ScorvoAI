@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'dart:io' show SocketException, HandshakeException;
 import 'package:http/http.dart' as http;
 import 'package:scorvoai/config.dart';
 
@@ -10,19 +11,52 @@ import 'package:scorvoai/config.dart';
 enum ApiQuizMode { mixed, custom }
 
 class ApiService {
+  static const _timeout = Duration(seconds: 30);
+
+  /// Wraps low-level network errors into a human-readable, actionable message.
+  static Exception _humanize(Object e, String url) {
+    if (e is SocketException) {
+      final reason = e.osError?.message ?? e.message;
+      // Most likely causes when a connection refuses or times out
+      return Exception(
+        'Cannot reach backend at $url\n'
+        'Reason: $reason\n'
+        '• Is the backend running?\n'
+        '• Is the IP in lib/config.dart correct? (your laptop\'s current LAN IP)\n'
+        '• Started with --host 0.0.0.0 (not 127.0.0.1)?\n'
+        '• Phone on the same Wi-Fi as the laptop?'
+      );
+    }
+    if (e is TimeoutException) {
+      return Exception('Backend did not respond within 30s at $url\n(Server slow, Ollama loading, or wrong IP)');
+    }
+    if (e is HandshakeException) {
+      return Exception('TLS handshake failed at $url\n(${e.message})');
+    }
+    return Exception('Network error: $e');
+  }
+
   static Future<Map<String, dynamic>> _request(String path, {Map<String, dynamic>? body}) async {
     final url = Uri.parse('$apiBaseUrl$path');
     try {
       final response = body != null
-          ? await http.post(url, headers: {'Content-Type': 'application/json'}, body: jsonEncode(body))
-          : await http.get(url);
+          ? await http.post(url, headers: {'Content-Type': 'application/json'}, body: jsonEncode(body)).timeout(_timeout)
+          : await http.get(url).timeout(_timeout);
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
-        throw Exception('Server error: ${response.statusCode}');
+        throw Exception('Server returned HTTP ${response.statusCode} for $path: ${response.body.substring(0, response.body.length.clamp(0, 200))}');
       }
+    } on SocketException catch (e) {
+      throw _humanize(e, url.toString());
+    } on TimeoutException catch (e) {
+      throw _humanize(e, url.toString());
+    } on HandshakeException catch (e) {
+      throw _humanize(e, url.toString());
+    } on Exception {
+      rethrow; // Already a friendly Exception
     } catch (e) {
-      throw Exception('Network error: $e');
+      throw _humanize(e, url.toString());
     }
   }
 

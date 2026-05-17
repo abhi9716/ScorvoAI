@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scorvoai/theme/app_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scorvoai/services/auth_service.dart';
 import 'package:scorvoai/services/firestore_service.dart';
@@ -72,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff5f7fa),
+      backgroundColor: AppColors.bg,
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _profile == null
@@ -117,14 +118,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SliverAppBar(
       expandedHeight: 220,
       pinned: true,
-      backgroundColor: const Color(0xff1a73e8),
+      backgroundColor: AppColors.indigoBright,
       foregroundColor: Colors.white,
       elevation: 0,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xff1a73e8), Color(0xff0d47a1)],
+              colors: [AppColors.indigoBright, AppColors.indigo],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -173,7 +174,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _initialsAvatar(String initials, {double size = 40}) {
     return Container(
       width: size, height: size,
-      color: const Color(0xff1565c0),
+      color: AppColors.indigo,
       alignment: Alignment.center,
       child: Text(initials, style: TextStyle(fontSize: size * 0.32, fontWeight: FontWeight.w700, color: Colors.white)),
     );
@@ -190,7 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         _statBox('$streak', 'Streak', '🔥', const Color(0xffff6d00)),
         const SizedBox(width: 10),
-        _statBox('$total', 'Quizzes', '📝', const Color(0xff1a73e8)),
+        _statBox('$total', 'Quizzes', '📝', AppColors.indigoBright),
         const SizedBox(width: 10),
         _statBox('${avg.toStringAsFixed(0)}%', 'Avg', '📊', const Color(0xff34a853)),
         const SizedBox(width: 10),
@@ -213,7 +214,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Text(emoji, style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 4),
             Text(value, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: color)),
-            Text(label, style: const TextStyle(fontSize: 10, color: Color(0xff999999))),
+            Text(label, style: const TextStyle(fontSize: 10, color: AppColors.textTertiary)),
           ],
         ),
       ),
@@ -223,16 +224,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildExamCard() {
     return _infoCard(
       icon: Icons.school_rounded,
-      iconColor: const Color(0xff1a73e8),
+      iconColor: AppColors.indigoBright,
       title: 'Target Exam',
       trailing: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
         decoration: BoxDecoration(
-          color: const Color(0xff1a73e8).withValues(alpha: 0.08),
+          color: AppColors.indigoBright.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: const Color(0xff1a73e8).withValues(alpha: 0.3)),
+          border: Border.all(color: AppColors.indigoBright.withValues(alpha: 0.3)),
         ),
-        child: Text(_profile!.examLabel, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Color(0xff1a73e8))),
+        child: Text(_profile!.examLabel, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.indigoBright)),
       ),
     );
   }
@@ -257,7 +258,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: const Icon(Icons.flag_rounded, color: Color(0xff34a853), size: 18),
               ),
               const SizedBox(width: 10),
-              const Text('Study Goals', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Color(0xff1a1a2e))),
+              const Text('Study Goals', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
             ],
           ),
           const SizedBox(height: 12),
@@ -303,7 +304,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Icon(Icons.insights_rounded, color: color, size: 18),
               ),
               const SizedBox(width: 10),
-              const Text('Performance Overview', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Color(0xff1a1a2e))),
+              const Text('Performance Overview', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
             ],
           ),
           const SizedBox(height: 16),
@@ -343,7 +344,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Text(value, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: color)),
         const SizedBox(height: 2),
-        Text(label, style: const TextStyle(fontSize: 11, color: Color(0xff999999))),
+        Text(label, style: const TextStyle(fontSize: 11, color: AppColors.textTertiary)),
       ],
     );
   }
@@ -356,7 +357,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       applicationIcon: Container(
         width: 48, height: 48,
         decoration: BoxDecoration(
-          color: const Color(0xff1a73e8),
+          color: AppColors.indigoBright,
           borderRadius: BorderRadius.circular(12),
         ),
         child: const Icon(Icons.school_rounded, color: Colors.white, size: 28),
@@ -377,12 +378,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Column(
         children: [
           _menuItem(
-            Icons.smart_toy_rounded, 'AI Tutor', const Color(0xff1a73e8),
+            Icons.smart_toy_rounded, 'AI Tutor', AppColors.indigoBright,
             () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ChatScreen())),
           ),
           const Divider(height: 1, indent: 56),
           _menuItem(
-            Icons.info_outline_rounded, 'About ScorvoAI', const Color(0xff666666),
+            Icons.info_outline_rounded, 'About ScorvoAI', AppColors.textSecondary,
             _showAboutDialog,
           ),
         ],
@@ -404,8 +405,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Icon(icon, color: color, size: 20),
             ),
             const SizedBox(width: 12),
-            Expanded(child: Text(title, style: const TextStyle(fontSize: 15, color: Color(0xff1a1a2e), fontWeight: FontWeight.w500))),
-            const Icon(Icons.chevron_right_rounded, color: Color(0xffcccccc), size: 20),
+            Expanded(child: Text(title, style: const TextStyle(fontSize: 15, color: AppColors.textPrimary, fontWeight: FontWeight.w500))),
+            const Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary, size: 20),
           ],
         ),
       ),
@@ -444,7 +445,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Icon(icon, color: iconColor, size: 20),
           ),
           const SizedBox(width: 12),
-          Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Color(0xff1a1a2e))),
+          Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
           const Spacer(),
           trailing,
         ],
