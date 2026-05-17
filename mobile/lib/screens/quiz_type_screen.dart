@@ -224,7 +224,7 @@ class _QuizTypeScreenState extends State<QuizTypeScreen> with SingleTickerProvid
               const SizedBox(height: 10),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8)]),
+                decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.surfaceLine, width: 0.5)),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<int>(
                     value: _questionCount,

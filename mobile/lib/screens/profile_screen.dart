@@ -159,6 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.surfaceLine, width: 0.5),
                   ),
                   child: Text(p.examLabel,
                       maxLines: 1, overflow: TextOverflow.ellipsis,

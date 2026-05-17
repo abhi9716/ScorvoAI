@@ -221,6 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.18),
                         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.surfaceLine, width: 0.5),
                       ),
                       child: Text(examLabel,
                           maxLines: 1, overflow: TextOverflow.ellipsis,

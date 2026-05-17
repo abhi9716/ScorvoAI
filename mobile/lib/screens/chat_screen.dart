@@ -476,6 +476,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.surfaceLine, width: 0.5),
             ),
             child: const Icon(Icons.smart_toy_rounded, color: Colors.white, size: 22),
           ),

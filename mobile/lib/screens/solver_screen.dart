@@ -123,6 +123,7 @@ class _SolverScreenState extends State<SolverScreen> {
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.surfaceLine, width: 0.5),
               ),
               child: const Icon(Icons.calculate_rounded, color: Colors.white, size: 22),
             ),
@@ -281,9 +282,10 @@ class _SolverScreenState extends State<SolverScreen> {
                       Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppColors.surface,
                           shape: BoxShape.circle,
                           boxShadow: [BoxShadow(color: AppColors.success.withValues(alpha: 0.2), blurRadius: 20)],
+        border: Border.all(color: AppColors.surfaceLine, width: 0.5),
                         ),
                         child: CircularProgressIndicator(color: AppColors.success, strokeWidth: 3),
                       ),
@@ -329,7 +331,6 @@ class _SolverScreenState extends State<SolverScreen> {
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.surfaceLine),
                   border: Border.all(color: AppColors.surfaceLine, width: 0.5),
                 ),
                 child: GptMarkdown(

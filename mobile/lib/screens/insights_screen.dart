@@ -483,10 +483,9 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
               child: Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.surface,
                   borderRadius: BorderRadius.circular(14),
                   border: Border(left: BorderSide(color: color, width: 4)),
-                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 2))],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -578,9 +577,9 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.surface,
                   borderRadius: BorderRadius.circular(16),
-                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 2))],
+        border: Border.all(color: AppColors.surfaceLine, width: 0.5),
                 ),
                 child: Row(
                   children: [
@@ -727,9 +726,9 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.surface,
             borderRadius: BorderRadius.circular(12),
-            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 6, offset: const Offset(0, 2))],
+        border: Border.all(color: AppColors.surfaceLine, width: 0.5),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -807,9 +806,9 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
   }
 
   BoxDecoration _cardDecor() => BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 10, offset: const Offset(0, 3))],
+        border: Border.all(color: AppColors.surfaceLine, width: 0.5),
       );
 
   Widget _emptyTabState(String title, String sub) {

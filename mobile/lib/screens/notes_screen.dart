@@ -472,9 +472,10 @@ class _NoteDetailSheet extends StatelessWidget {
       maxChildSize: 0.95,
       minChildSize: 0.4,
       builder: (_, ctrl) => Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          border: Border.all(color: AppColors.surfaceLine, width: 0.5),
         ),
         child: Column(
           children: [
@@ -548,9 +549,10 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          border: Border.all(color: AppColors.surfaceLine, width: 0.5),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

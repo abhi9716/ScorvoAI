@@ -21,15 +21,15 @@ class _Dark {
 
 // ── Light palette — cool warm-white w/ indigo accents ──────────────────
 class _Light {
-  static const bg = Color(0xfff7f8fd);            // cool off-white
+  static const bg = Color(0xfff5f6fb);            // soft off-white (subtle indigo cast)
   static const bgElevated = Color(0xffffffff);    // app-bar / nav-bar
   static const surface = Color(0xffffffff);       // cards
-  static const surfaceHigh = Color(0xfff0f1f8);   // raised surfaces (slight indigo)
-  static const surfaceLine = Color(0xffdfe1ec);   // borders, subtly indigo
+  static const surfaceHigh = Color(0xffe9ebf4);   // raised surfaces (stronger contrast)
+  static const surfaceLine = Color(0xffc8cbdb);   // borders — visible on white
 
   static const textPrimary = Color(0xff14142b);   // near-black, slight cool
-  static const textSecondary = Color(0xff52527a); // mid-tone, indigo-leaning
-  static const textTertiary = Color(0xff8c8caa);  // captions
+  static const textSecondary = Color(0xff3d3d5c); // darker mid-tone — readable on white
+  static const textTertiary = Color(0xff6a6a86);  // captions — meets WCAG AA on #ffffff
   static const textOnAccent = Color(0xffffffff);
 }
 
