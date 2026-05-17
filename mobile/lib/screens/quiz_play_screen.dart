@@ -279,7 +279,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
               spacing: 6,
               runSpacing: 4,
               children: [
-                _pill(q['subject'] ?? 'Mixed', AppColors.indigoBright, const Color(0xffe3f2fd)),
+                _pill(q['subject'] ?? 'Mixed', AppColors.indigoBright, AppColors.indigoBright.withValues(alpha: 0.15)),
                 _pill(q['chapter'] ?? 'General', const Color(0xff9c27b0), const Color(0xfff3e5f5)),
                 _pill(q['difficulty']?.toString().isNotEmpty == true ? (q['difficulty'] as String).toUpperCase() : 'MIXED', _difficultyColor(q['difficulty']), _difficultyColor(q['difficulty']).withValues(alpha: 0.1)),
                 if (q['ai_generated'] == true) _pill('AI', const Color(0xff34a853), const Color(0xffe8f5e9)),
@@ -295,25 +295,25 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
 
               if (showResult) {
                 if (optIdx == correctIdx) {
-                  bg = const Color(0xffc8e6c9);
-                  border = const Color(0xff34a853);
-                  text = const Color(0xff1b5e20);
+                  bg = AppColors.success.withValues(alpha: 0.15);
+                  border = AppColors.success;
+                  text = AppColors.textPrimary;
                   weight = FontWeight.w600;
-                  icon = const Icon(Icons.check_circle, color: Color(0xff34a853), size: 22);
+                  icon = const Icon(Icons.check_circle, color: AppColors.success, size: 22);
                 } else if (optIdx == selectedAnswer) {
-                  bg = const Color(0xffef9a9a);
-                  border = const Color(0xffea4335);
-                  text = const Color(0xffb71c1c);
-                  icon = const Icon(Icons.cancel, color: Color(0xffea4335), size: 22);
+                  bg = AppColors.danger.withValues(alpha: 0.15);
+                  border = AppColors.danger;
+                  text = AppColors.textPrimary;
+                  icon = const Icon(Icons.cancel, color: AppColors.danger, size: 22);
                 } else {
-                  bg = Colors.grey.shade50;
-                  border = Colors.grey.shade200;
+                  bg = AppColors.surfaceHigh;
+                  border = AppColors.surfaceLine;
                   text = AppColors.textTertiary;
                 }
               } else {
                 final selected = selectedIdx == optIdx;
-                bg = selected ? AppColors.indigoBright : Colors.grey.shade50;
-                border = selected ? AppColors.indigoBright : Colors.grey.shade200;
+                bg = selected ? AppColors.indigoBright : AppColors.surfaceHigh;
+                border = selected ? AppColors.indigoBright : AppColors.surfaceLine;
                 text = selected ? Colors.white : AppColors.textPrimary;
                 weight = selected ? FontWeight.w600 : FontWeight.normal;
               }
@@ -353,24 +353,24 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: const Color(0xffe8f5e9),
+                    color: AppColors.success.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: const Color(0xff34a853).withValues(alpha: 0.4)),
+                    border: Border.all(color: AppColors.success.withValues(alpha: 0.4)),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                      Row(
                         children: [
-                          Icon(Icons.lightbulb_outline, color: Color(0xff2e7d32), size: 16),
-                          SizedBox(width: 6),
-                          Text('Explanation', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xff2e7d32))),
+                          Icon(Icons.lightbulb_outline, color: AppColors.success, size: 16),
+                          const SizedBox(width: 6),
+                          Text('Explanation', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.success)),
                         ],
                       ),
                       const SizedBox(height: 6),
                       GptMarkdown(
                         q['explanation'] as String,
-                        style: const TextStyle(fontSize: 13, color: Color(0xff2e7d32), height: 1.45),
+                        style: TextStyle(fontSize: 13, color: AppColors.textPrimary, height: 1.45),
                         useDollarSignsForLatex: false,
                       ),
                     ],
@@ -391,8 +391,8 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
     final canGoPrev = _currentIndex > 0;
 
     final containerDecoration = BoxDecoration(
-      color: Colors.white,
-      border: Border(top: BorderSide(color: Colors.grey.shade200)),
+      color: AppColors.bgElevated,
+      border: Border(top: BorderSide(color: AppColors.surfaceLine)),
     );
     final prevButton = OutlinedButton.icon(
       onPressed: _goPrevious,

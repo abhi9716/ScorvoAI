@@ -52,7 +52,7 @@ class _DailyScreenState extends State<DailyScreen> {
       final total = _result!['total'] as int;
       final pct = ((score / total) * 100).round();
       return Scaffold(
-        backgroundColor: const Color(0xfff5f7fa),
+        backgroundColor: AppColors.bg,
         appBar: AppBar(title: const Text('Daily Result'), backgroundColor: const Color(0xffea4335), foregroundColor: Colors.white),
         body: SafeArea(
           child: Center(
@@ -75,7 +75,7 @@ class _DailyScreenState extends State<DailyScreen> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xfff5f7fa),
+      backgroundColor: AppColors.bg,
       appBar: AppBar(title: const Text('Daily Challenge'), backgroundColor: const Color(0xffea4335), foregroundColor: Colors.white),
       body: SafeArea(
         child: SingleChildScrollView(

@@ -452,7 +452,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
               margin: const EdgeInsets.only(bottom: 12),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: const Color(0xfffff3e0),
+                color: AppColors.warning.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: const Color(0xffffcc02).withValues(alpha: 0.5)),
               ),
@@ -756,7 +756,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
-                      color: const Color(0xffe3f2fd), borderRadius: BorderRadius.circular(10)),
+                      color: AppColors.indigoBright.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(10)),
                   child: Text(subject,
                       style: TextStyle(
                           fontSize: 10, color: AppColors.indigoBright, fontWeight: FontWeight.w500)),

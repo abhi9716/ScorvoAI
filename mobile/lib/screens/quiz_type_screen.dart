@@ -90,7 +90,7 @@ class _QuizTypeScreenState extends State<QuizTypeScreen> with SingleTickerProvid
     if (_loading) return const Scaffold(body: Center(child: CircularProgressIndicator()));
 
     return Scaffold(
-      backgroundColor: const Color(0xfff5f7fa),
+      backgroundColor: AppColors.bg,
       appBar: AppBar(title: const Text('Custom Quiz'), backgroundColor: const Color(0xff1a73e8), foregroundColor: Colors.white),
       body: SafeArea(
         child: SingleChildScrollView(
