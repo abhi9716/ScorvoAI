@@ -1,0 +1,36 @@
+# Python
+venv/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Secrets / local state
+.env
+.env.*
+!.env.example
+scorvoai.db
+scorvoai.db-journal
+uploads/*
+!uploads/.gitkeep
+
+# Docker / CI
+Dockerfile
+.dockerignore
+.git
+.gitignore
+.github/
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store
+
+# Docs / scripts (not needed at runtime)
+*.md
+run_forever.py
+run_server.sh
+start_server.sh
