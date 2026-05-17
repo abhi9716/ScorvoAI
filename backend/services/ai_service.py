@@ -15,6 +15,12 @@ OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY", "")
 GEMMA_MODEL = os.getenv("GEMMA_MODEL", "gemma4:31b-cloud")
 
 
+def _ollama_headers() -> dict:
+    """Auth headers for Ollama calls. Required when calling Ollama Cloud
+    (OLLAMA_BASE=https://ollama.com) — local Ollama ignores them."""
+    return {"Authorization": f"Bearer {OLLAMA_API_KEY}"} if OLLAMA_API_KEY else {}
+
+
 def _ollama_err(e: Exception, where: str) -> Exception:
     """Convert raw httpx errors into actionable messages mentioning the URL."""
     name = type(e).__name__
@@ -22,10 +28,11 @@ def _ollama_err(e: Exception, where: str) -> Exception:
     if "ConnectError" in name or "Connect" in name or "connection" in msg.lower():
         return Exception(
             f"{where}: cannot reach Ollama at {OLLAMA_BASE}. "
-            f"If the backend runs in Docker, set OLLAMA_BASE to "
-            f"http://host.docker.internal:11434 (and pass "
-            f"--add-host=host.docker.internal:host-gateway) or run with "
-            f"--network=host. Underlying: {name}: {msg}"
+            f"For Ollama Cloud (recommended for cloud deploys), set "
+            f"OLLAMA_BASE=https://ollama.com and ensure OLLAMA_API_KEY is set. "
+            f"For local Ollama in Docker, set OLLAMA_BASE=http://host.docker.internal:11434 "
+            f"with --add-host=host.docker.internal:host-gateway. "
+            f"Underlying: {name}: {msg}"
         )
     return Exception(f"{where}: {name}: {msg}")
 
@@ -221,6 +228,7 @@ async def get_chat_response(question: str) -> str:
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 f"{OLLAMA_BASE}/api/chat",
+                headers=_ollama_headers(),
                 json={
                     "model": GEMMA_MODEL,
                     "messages": [
@@ -245,6 +253,7 @@ async def get_chat_response_stream(question: str):
             async with client.stream(
                 "POST",
                 f"{OLLAMA_BASE}/api/chat",
+                headers=_ollama_headers(),
                 json={
                     "model": GEMMA_MODEL,
                     "messages": [
@@ -275,6 +284,7 @@ async def get_solve_response(question: str) -> str:
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 f"{OLLAMA_BASE}/api/chat",
+                headers=_ollama_headers(),
                 json={
                     "model": GEMMA_MODEL,
                     "messages": [
@@ -335,6 +345,7 @@ async def generate_quiz_questions(count: int, subjects: list[str] | None = None,
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 f"{OLLAMA_BASE}/api/chat",
+                headers=_ollama_headers(),
                 json={
                     "model": GEMMA_MODEL,
                     "messages": [
@@ -382,6 +393,7 @@ async def generate_quiz_questions_stream(count: int, subjects: list[str] | None 
         async with client.stream(
             "POST",
             f"{OLLAMA_BASE}/api/chat",
+                headers=_ollama_headers(),
             json={
                 "model": GEMMA_MODEL,
                 "messages": [
@@ -445,6 +457,7 @@ async def classify_note_content(content: str) -> dict:
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 f"{OLLAMA_BASE}/api/chat",
+                headers=_ollama_headers(),
                 json={
                     "model": GEMMA_MODEL,
                     "messages": [
@@ -482,6 +495,7 @@ async def format_note_content(content: str) -> str:
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 f"{OLLAMA_BASE}/api/chat",
+                headers=_ollama_headers(),
                 json={
                     "model": GEMMA_MODEL,
                     "messages": [
@@ -511,6 +525,7 @@ async def generate_lesson(subject: str, chapter: str, difficulty: str = "medium"
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 f"{OLLAMA_BASE}/api/chat",
+                headers=_ollama_headers(),
                 json={
                     "model": GEMMA_MODEL,
                     "messages": [
@@ -540,6 +555,7 @@ async def generate_lesson_stream(subject: str, chapter: str, difficulty: str = "
             async with client.stream(
                 "POST",
                 f"{OLLAMA_BASE}/api/chat",
+                headers=_ollama_headers(),
                 json={
                     "model": GEMMA_MODEL,
                     "messages": [
@@ -637,6 +653,7 @@ async def generate_current_affairs(count: int = 5) -> list[dict]:
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 f"{OLLAMA_BASE}/api/chat",
+                headers=_ollama_headers(),
                 json={
                     "model": GEMMA_MODEL,
                     "messages": [
