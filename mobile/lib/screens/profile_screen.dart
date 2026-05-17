@@ -117,7 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         : '?';
 
     return SliverAppBar(
-      expandedHeight: 220,
+      expandedHeight: 260,
       pinned: true,
       backgroundColor: AppColors.indigoBright,
       foregroundColor: Colors.white,
@@ -135,7 +135,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 40),
                 Container(
                   width: 84,
                   height: 84,
@@ -208,9 +207,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(14),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 2))],
+          border: Border.all(color: AppColors.surfaceLine, width: 0.5),
         ),
         child: Column(
           children: [
@@ -248,9 +247,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 2))],
+        border: Border.all(color: AppColors.surfaceLine, width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,9 +293,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 2))],
+        border: Border.all(color: AppColors.surfaceLine, width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -316,9 +315,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Row(
             children: [
               Expanded(child: _perfStat('Avg Score', '${avg.toStringAsFixed(1)}%', color)),
-              Container(width: 1, height: 40, color: const Color(0xffe0e0e0)),
+              Container(width: 1, height: 40, color: AppColors.surfaceLine),
               Expanded(child: _perfStat('Pass Rate', '${passRate.toStringAsFixed(0)}%', const Color(0xff34a853))),
-              Container(width: 1, height: 40, color: const Color(0xffe0e0e0)),
+              Container(width: 1, height: 40, color: AppColors.surfaceLine),
               Expanded(child: _perfStat('Qs Done', '$totalQ', const Color(0xff9c27b0))),
             ],
           ),
@@ -485,9 +484,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 2))],
+        border: Border.all(color: AppColors.surfaceLine, width: 0.5),
       ),
       child: Row(
         children: [
