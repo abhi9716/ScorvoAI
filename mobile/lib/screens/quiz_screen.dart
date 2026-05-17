@@ -66,7 +66,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   const SizedBox(height: AppSpacing.lg),
                   Text('Custom Quiz', style: AppText.h2),
                   const SizedBox(height: AppSpacing.sm),
-                  const Text('Pick exact exam stage, paper, subject and chapter to target your prep.',
+                  Text('Pick exact exam stage, paper, subject and chapter to target your prep.',
                       style: AppText.bodyDim),
                   const SizedBox(height: AppSpacing.md),
                   _customQuizCard(),
@@ -152,7 +152,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 child: Icon(Icons.auto_fix_high_rounded, color: color, size: 18),
               ),
               const SizedBox(width: 10),
-              const Text('Smart Practice', style: AppText.h2),
+              Text('Smart Practice', style: AppText.h2),
               const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -178,7 +178,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: AppDecor.chip(AppColors.danger),
                   child: Text(t['topic'] as String? ?? '',
-                      style: const TextStyle(fontSize: 11, color: AppColors.danger, fontWeight: FontWeight.w500)),
+                      style: TextStyle(fontSize: 11, color: AppColors.danger, fontWeight: FontWeight.w500)),
                 );
               }).toList(),
             ),
@@ -211,12 +211,12 @@ class _QuizScreenState extends State<QuizScreen> {
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(color: AppColors.indigo.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(8)),
-                child: const Icon(Icons.flash_on_rounded, color: AppColors.indigoBright, size: 16),
+                child: Icon(Icons.flash_on_rounded, color: AppColors.indigoBright, size: 16),
               ),
               const SizedBox(width: 10),
-              const Text('Quick Mix', style: AppText.h3),
+              Text('Quick Mix', style: AppText.h3),
               const Spacer(),
-              const Text('Random questions', style: AppText.captionDim),
+              Text('Random questions', style: AppText.captionDim),
             ],
           ),
           const SizedBox(height: 12),
@@ -229,7 +229,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     onPressed: () => _startMixed(c),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 8),
-                      side: const BorderSide(color: AppColors.surfaceLine),
+                      side: BorderSide(color: AppColors.surfaceLine),
                       backgroundColor: AppColors.surfaceHigh,
                       minimumSize: const Size(0, 0),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -238,9 +238,9 @@ class _QuizScreenState extends State<QuizScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text('$c',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.w800, color: AppColors.textPrimary, height: 1.1)),
-                        const Text('questions',
+                        Text('questions',
                             style: TextStyle(fontSize: 9.5, color: AppColors.textTertiary, height: 1.1)),
                       ],
                     ),
@@ -268,14 +268,14 @@ class _QuizScreenState extends State<QuizScreen> {
               width: 48, height: 48,
               decoration: BoxDecoration(
                   color: AppColors.violet.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(12)),
-              child: const Icon(Icons.tune_rounded, color: AppColors.violet, size: 22),
+              child: Icon(Icons.tune_rounded, color: AppColors.violet, size: 22),
             ),
             const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Build Your Own Quiz', style: AppText.h3),
+                  Text('Build Your Own Quiz', style: AppText.h3),
                   const SizedBox(height: 4),
                   Text(
                     exam == null
@@ -286,7 +286,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary),
+            Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary),
           ],
         ),
       ),
@@ -380,7 +380,7 @@ class _CustomQuizSheetState extends State<_CustomQuizSheet> {
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                const Text('Build Quiz', style: AppText.h2),
+                Text('Build Quiz', style: AppText.h2),
                 const Spacer(),
                 IconButton(icon: const Icon(Icons.close_rounded), onPressed: () => Navigator.pop(context)),
               ],
@@ -484,7 +484,7 @@ class _CustomQuizSheetState extends State<_CustomQuizSheet> {
             const Spacer(),
             Flexible(child: Text(value, style: AppText.h3, overflow: TextOverflow.ellipsis, textAlign: TextAlign.end)),
             const SizedBox(width: 4),
-            const Icon(Icons.unfold_more_rounded, size: 16, color: AppColors.textTertiary),
+            Icon(Icons.unfold_more_rounded, size: 16, color: AppColors.textTertiary),
           ],
         ),
       ),
@@ -536,7 +536,7 @@ class _CustomQuizSheetState extends State<_CustomQuizSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Difficulty', style: AppText.h3),
+        Text('Difficulty', style: AppText.h3),
         const SizedBox(height: 6),
         Row(
           children: opts.map((d) {
@@ -574,9 +574,9 @@ class _CustomQuizSheetState extends State<_CustomQuizSheet> {
       children: [
         Row(
           children: [
-            const Text('Number of questions', style: AppText.h3),
+            Text('Number of questions', style: AppText.h3),
             const Spacer(),
-            Text('$_count', style: const TextStyle(color: AppColors.indigoBright, fontWeight: FontWeight.w800, fontSize: 18)),
+            Text('$_count', style: TextStyle(color: AppColors.indigoBright, fontWeight: FontWeight.w800, fontSize: 18)),
           ],
         ),
         const SizedBox(height: 4),

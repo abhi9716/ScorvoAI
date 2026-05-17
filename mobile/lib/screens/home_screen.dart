@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.chat_bubble_rounded, color: AppColors.indigoBright),
+            icon: Icon(Icons.chat_bubble_rounded, color: AppColors.indigoBright),
             tooltip: 'Ask AI Tutor',
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ChatScreen())),
           ),
@@ -285,10 +285,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: AppColors.indigoBright.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(Icons.menu_book_rounded, color: AppColors.indigoBright, size: 16),
+                child: Icon(Icons.menu_book_rounded, color: AppColors.indigoBright, size: 16),
               ),
               const SizedBox(width: 10),
-              const Text('Lesson of the Day', style: AppText.h2),
+              Text('Lesson of the Day', style: AppText.h2),
               const Spacer(),
               if (_generatingLesson)
                 const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)),
@@ -316,14 +316,14 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: AppDecor.chip(AppColors.indigoBright),
               child: Text(subject,
-                  style: const TextStyle(fontSize: 10, color: AppColors.indigoBright, fontWeight: FontWeight.w600)),
+                  style: TextStyle(fontSize: 10, color: AppColors.indigoBright, fontWeight: FontWeight.w600)),
             ),
             const SizedBox(width: 6),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: AppDecor.chip(AppColors.violet),
               child: Text(chapter,
-                  style: const TextStyle(fontSize: 10, color: AppColors.violet, fontWeight: FontWeight.w600)),
+                  style: TextStyle(fontSize: 10, color: AppColors.violet, fontWeight: FontWeight.w600)),
             ),
           ],
         ),
@@ -349,7 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const Spacer(),
             IconButton(
-              icon: const Icon(Icons.refresh_rounded, size: 18, color: AppColors.textTertiary),
+              icon: Icon(Icons.refresh_rounded, size: 18, color: AppColors.textTertiary),
               tooltip: 'New lesson',
               onPressed: _generatingLesson ? null : _generateDailyLesson,
             ),
@@ -364,9 +364,9 @@ class _HomeScreenState extends State<HomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (_generatingLesson)
-          const Text('Crafting today\'s lesson based on your weak areas...', style: AppText.bodyDim)
+          Text('Crafting today\'s lesson based on your weak areas...', style: AppText.bodyDim)
         else
-          const Text('Tap Generate to get your daily 3-minute lesson.', style: AppText.bodyDim),
+          Text('Tap Generate to get your daily 3-minute lesson.', style: AppText.bodyDim),
         const SizedBox(height: 12),
         ElevatedButton.icon(
           onPressed: _generatingLesson ? null : _generateDailyLesson,
@@ -392,16 +392,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: AppColors.info.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(Icons.newspaper_rounded, color: AppColors.info, size: 16),
+                child: Icon(Icons.newspaper_rounded, color: AppColors.info, size: 16),
               ),
               const SizedBox(width: 10),
-              const Text('Top News Today', style: AppText.h2),
+              Text('Top News Today', style: AppText.h2),
               const Spacer(),
               if (_loadingAffairs)
                 const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
               else
                 IconButton(
-                  icon: const Icon(Icons.refresh_rounded, size: 18, color: AppColors.textTertiary),
+                  icon: Icon(Icons.refresh_rounded, size: 18, color: AppColors.textTertiary),
                   tooltip: 'Refresh',
                   onPressed: _fetchCurrentAffairs,
                 ),
@@ -467,7 +467,7 @@ class _HomeScreenState extends State<HomeScreen> {
               if (exam.isNotEmpty) ...[
                 const SizedBox(height: 6),
                 Row(children: [
-                  const Icon(Icons.school_rounded, size: 12, color: AppColors.textTertiary),
+                  Icon(Icons.school_rounded, size: 12, color: AppColors.textTertiary),
                   const SizedBox(width: 4),
                   Expanded(child: Text(exam, style: AppText.captionDim, maxLines: 2)),
                 ]),
@@ -476,7 +476,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    const Icon(Icons.open_in_new_rounded, size: 14, color: AppColors.indigoBright),
+                    Icon(Icons.open_in_new_rounded, size: 14, color: AppColors.indigoBright),
                     const SizedBox(width: 4),
                     Text('Read full article',
                         style: TextStyle(
@@ -518,7 +518,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Quick Tools', style: AppText.h2),
+        Text('Quick Tools', style: AppText.h2),
         const SizedBox(height: AppSpacing.md),
         Row(
           children: [
@@ -589,7 +589,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            if (fullWidth) const Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary),
+            if (fullWidth) Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary),
           ],
         ),
       ),
@@ -602,7 +602,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return CircleAvatar(
         radius: radius,
         backgroundColor: AppColors.surfaceHigh,
-        child: const Icon(Icons.person_rounded, color: AppColors.indigoBright, size: 18),
+        child: Icon(Icons.person_rounded, color: AppColors.indigoBright, size: 18),
       );
     }
     Widget inner;

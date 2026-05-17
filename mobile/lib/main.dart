@@ -9,15 +9,11 @@ import 'package:scorvoai/screens/onboarding_screen.dart';
 import 'package:scorvoai/services/firestore_service.dart';
 import 'package:scorvoai/services/rag_service.dart';
 import 'package:scorvoai/theme/app_theme.dart';
+import 'package:scorvoai/theme/theme_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.light,
-    systemNavigationBarColor: AppColors.bgElevated,
-    systemNavigationBarIconBrightness: Brightness.light,
-  ));
+  await ThemeController.load(); // Restores saved light/dark preference
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   try {
     await RagService().initialize();
@@ -30,13 +26,29 @@ class ScorvoAIApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ScorvoAI',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.dark,
-      darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.dark,
-      home: const _AuthGate(),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: ThemeController.mode,
+      builder: (context, mode, _) {
+        // Keep AppColors in sync with the effective mode for system mode users
+        final isDark = mode == ThemeMode.dark ||
+            (mode == ThemeMode.system &&
+                MediaQuery.platformBrightnessOf(context) == Brightness.dark);
+        AppColors.setDark(isDark);
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+          systemNavigationBarColor: AppColors.bgElevated,
+          systemNavigationBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+        ));
+        return MaterialApp(
+          title: 'ScorvoAI',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.light,
+          darkTheme: AppTheme.dark,
+          themeMode: mode,
+          home: const _AuthGate(),
+        );
+      },
     );
   }
 }

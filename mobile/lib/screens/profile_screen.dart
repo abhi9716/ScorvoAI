@@ -6,6 +6,7 @@ import 'package:scorvoai/services/firestore_service.dart';
 import 'package:scorvoai/models/user_profile.dart';
 import 'package:scorvoai/screens/onboarding_screen.dart';
 import 'package:scorvoai/screens/chat_screen.dart';
+import 'package:scorvoai/theme/theme_controller.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -123,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       elevation: 0,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [AppColors.indigoBright, AppColors.indigo],
               begin: Alignment.topLeft,
@@ -216,7 +217,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Text(emoji, style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 4),
             Text(value, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: color)),
-            Text(label, style: const TextStyle(fontSize: 10, color: AppColors.textTertiary)),
+            Text(label, style: TextStyle(fontSize: 10, color: AppColors.textTertiary)),
           ],
         ),
       ),
@@ -237,7 +238,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         child: Text(_profile!.examLabel,
             maxLines: 1, overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.indigoBright)),
+            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.indigoBright)),
       ),
     );
   }
@@ -262,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: const Icon(Icons.flag_rounded, color: Color(0xff34a853), size: 18),
               ),
               const SizedBox(width: 10),
-              const Text('Study Goals', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
+              Text('Study Goals', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
             ],
           ),
           const SizedBox(height: 12),
@@ -308,7 +309,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Icon(Icons.insights_rounded, color: color, size: 18),
               ),
               const SizedBox(width: 10),
-              const Text('Performance Overview', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
+              Text('Performance Overview', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
             ],
           ),
           const SizedBox(height: 16),
@@ -348,7 +349,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Text(value, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: color)),
         const SizedBox(height: 2),
-        Text(label, style: const TextStyle(fontSize: 11, color: AppColors.textTertiary)),
+        Text(label, style: TextStyle(fontSize: 11, color: AppColors.textTertiary)),
       ],
     );
   }
@@ -375,12 +376,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildMenuSection() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 2))],
+        border: Border.all(color: AppColors.surfaceLine, width: 0.5),
       ),
       child: Column(
         children: [
+          _themeToggleTile(),
+          const Divider(height: 1, indent: 56),
           _menuItem(
             Icons.smart_toy_rounded, 'AI Tutor', AppColors.indigoBright,
             () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ChatScreen())),
@@ -392,6 +395,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _themeToggleTile() {
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: ThemeController.mode,
+      builder: (ctx, mode, _) {
+        final isDark = mode == ThemeMode.dark;
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Row(
+            children: [
+              Container(
+                width: 36, height: 36,
+                decoration: BoxDecoration(
+                  color: (isDark ? AppColors.indigoBright : AppColors.warning).withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
+                  color: isDark ? AppColors.indigoBright : AppColors.warning,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Appearance',
+                        style: TextStyle(fontSize: 15, color: AppColors.textPrimary, fontWeight: FontWeight.w500)),
+                    Text(isDark ? 'Dark mode' : 'Light mode',
+                        style: TextStyle(fontSize: 12, color: AppColors.textTertiary)),
+                  ],
+                ),
+              ),
+              Switch.adaptive(
+                value: isDark,
+                onChanged: (_) => ThemeController.toggle(),
+                activeColor: AppColors.indigoBright,
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -409,8 +457,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Icon(icon, color: color, size: 20),
             ),
             const SizedBox(width: 12),
-            Expanded(child: Text(title, style: const TextStyle(fontSize: 15, color: AppColors.textPrimary, fontWeight: FontWeight.w500))),
-            const Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary, size: 20),
+            Expanded(child: Text(title, style: TextStyle(fontSize: 15, color: AppColors.textPrimary, fontWeight: FontWeight.w500))),
+            Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary, size: 20),
           ],
         ),
       ),
@@ -449,7 +497,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Icon(icon, color: iconColor, size: 20),
           ),
           const SizedBox(width: 12),
-          Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
+          Text(title, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
           const Spacer(),
           trailing,
         ],

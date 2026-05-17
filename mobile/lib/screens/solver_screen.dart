@@ -167,7 +167,7 @@ class _SolverScreenState extends State<SolverScreen> {
                     children: [
                       const Icon(Icons.edit_note_rounded, color: Color(0xff34a853), size: 20),
                       const SizedBox(width: 8),
-                      const Expanded(
+                      Expanded(
                         child: Text('Enter your question',
                             style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
                       ),
@@ -205,7 +205,7 @@ class _SolverScreenState extends State<SolverScreen> {
                                 color: AppColors.indigoBright.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: const Icon(Icons.photo_library_rounded, color: AppColors.indigoBright, size: 20),
+                              child: Icon(Icons.photo_library_rounded, color: AppColors.indigoBright, size: 20),
                             ),
                           ),
                         ),
@@ -226,14 +226,14 @@ class _SolverScreenState extends State<SolverScreen> {
                     textCapitalization: TextCapitalization.sentences,
                     decoration: InputDecoration(
                       hintText: 'Type a question or use the camera to scan it...',
-                      hintStyle: const TextStyle(color: AppColors.textTertiary, fontSize: 14),
+                      hintStyle: TextStyle(color: AppColors.textTertiary, fontSize: 14),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppColors.surfaceLine),
+                        borderSide: BorderSide(color: AppColors.surfaceLine),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppColors.surfaceLine),
+                        borderSide: BorderSide(color: AppColors.surfaceLine),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -288,10 +288,10 @@ class _SolverScreenState extends State<SolverScreen> {
                         child: const CircularProgressIndicator(color: Color(0xff34a853), strokeWidth: 3),
                       ),
                       const SizedBox(height: 16),
-                      const Text('Solving your question...',
+                      Text('Solving your question...',
                           style: TextStyle(fontSize: 15, color: AppColors.textSecondary, fontWeight: FontWeight.w500)),
                       const SizedBox(height: 4),
-                      const Text('This may take a few seconds',
+                      Text('This may take a few seconds',
                           style: TextStyle(fontSize: 13, color: AppColors.textTertiary)),
                     ],
                   ),
@@ -311,7 +311,7 @@ class _SolverScreenState extends State<SolverScreen> {
                     child: const Icon(Icons.lightbulb_rounded, color: Color(0xff34a853), size: 18),
                   ),
                   const SizedBox(width: 10),
-                  const Text('Solution',
+                  Text('Solution',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
                   const Spacer(),
                   TextButton.icon(
@@ -334,7 +334,7 @@ class _SolverScreenState extends State<SolverScreen> {
                 ),
                 child: GptMarkdown(
                   _solution!,
-                  style: const TextStyle(fontSize: 14.5, color: AppColors.textPrimary, height: 1.6),
+                  style: TextStyle(fontSize: 14.5, color: AppColors.textPrimary, height: 1.6),
                   useDollarSignsForLatex: false,
                   onLinkTap: (url, _) => launchUrlString(url),
                   tableBuilder: (context, rows, textStyle, config) {

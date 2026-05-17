@@ -54,7 +54,7 @@ class _MainShellState extends State<MainShell> {
           ? FloatingActionButtonLocation.startFloat
           : FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: AppColors.bgElevated,
           border: Border(top: BorderSide(color: AppColors.surfaceLine, width: 0.5)),
         ),

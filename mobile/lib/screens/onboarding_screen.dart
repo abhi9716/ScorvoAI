@@ -137,9 +137,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 12),
-          const Text('Which exam are you\npreparing for?', style: AppText.display),
+          Text('Which exam are you\npreparing for?', style: AppText.display),
           const SizedBox(height: 8),
-          const Text('Pick your target exam. You can change this later.', style: AppText.bodyDim),
+          Text('Pick your target exam. You can change this later.', style: AppText.bodyDim),
           const SizedBox(height: 24),
           ...kAllExams.map((e) {
             final selected = _selectedExamId == e.id;
@@ -203,9 +203,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.arrow_back_rounded, size: 40, color: AppColors.textTertiary),
+              Icon(Icons.arrow_back_rounded, size: 40, color: AppColors.textTertiary),
               const SizedBox(height: 10),
-              const Text('Pick an exam first', style: AppText.h3),
+              Text('Pick an exam first', style: AppText.h3),
               const SizedBox(height: 8),
               TextButton(onPressed: _back, child: const Text('Go back')),
             ],
@@ -219,7 +219,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 12),
-          const Text('Which stage are\nyou focused on?', style: AppText.display),
+          Text('Which stage are\nyou focused on?', style: AppText.display),
           const SizedBox(height: 8),
           Text('${exam.shortName} — pick the stage you\'re prepping for first.', style: AppText.bodyDim),
           const SizedBox(height: 24),
@@ -248,7 +248,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           color: AppColors.indigo.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Icon(Icons.layers_rounded, color: AppColors.indigoBright, size: 22),
+                        child: Icon(Icons.layers_rounded, color: AppColors.indigoBright, size: 22),
                       ),
                       const SizedBox(width: 14),
                       Expanded(
@@ -266,7 +266,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           ],
                         ),
                       ),
-                      if (selected) const Icon(Icons.check_circle_rounded, color: AppColors.indigoBright, size: 22),
+                      if (selected) Icon(Icons.check_circle_rounded, color: AppColors.indigoBright, size: 22),
                     ],
                   ),
                 ),
@@ -285,9 +285,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 12),
-          const Text('What are your\nstudy goals?', style: AppText.display),
+          Text('What are your\nstudy goals?', style: AppText.display),
           const SizedBox(height: 8),
-          const Text('Select all that apply — we\'ll tailor your experience.', style: AppText.bodyDim),
+          Text('Select all that apply — we\'ll tailor your experience.', style: AppText.bodyDim),
           const SizedBox(height: 24),
           Wrap(
             spacing: 10,
@@ -342,9 +342,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 12),
-          const Text('Almost there!', style: AppText.display),
+          Text('Almost there!', style: AppText.display),
           const SizedBox(height: 8),
-          const Text('Sign in to save your progress across devices.', style: AppText.bodyDim),
+          Text('Sign in to save your progress across devices.', style: AppText.bodyDim),
           const SizedBox(height: 32),
           Container(
             width: double.infinity,
@@ -417,7 +417,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             if (_page > 0)
               IconButton(
                 onPressed: _back,
-                icon: const Icon(Icons.arrow_back_rounded, color: AppColors.textSecondary),
+                icon: Icon(Icons.arrow_back_rounded, color: AppColors.textSecondary),
                 style: IconButton.styleFrom(
                   backgroundColor: AppColors.surface,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.md)),

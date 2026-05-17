@@ -68,7 +68,7 @@ class _LearnScreenState extends State<LearnScreen> with SingleTickerProviderStat
         title: const Text('Learn'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.history_rounded, color: AppColors.indigoBright),
+            icon: Icon(Icons.history_rounded, color: AppColors.indigoBright),
             tooltip: 'Recent lessons',
             onPressed: _recent.isEmpty ? null : _showRecentSheet,
           ),
@@ -182,38 +182,59 @@ class _LearnScreenState extends State<LearnScreen> with SingleTickerProviderStat
           const Divider(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 6),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: _diffColor(_difficulty).withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(Icons.signal_cellular_alt_rounded, color: _diffColor(_difficulty), size: 16),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: _diffColor(_difficulty).withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(Icons.signal_cellular_alt_rounded, color: _diffColor(_difficulty), size: 16),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(child: Text('Difficulty', style: AppText.caption)),
+                  ],
                 ),
-                const SizedBox(width: 10),
-                const Text('Difficulty', style: AppText.caption),
-                const Spacer(),
-                ...['easy', 'medium', 'hard'].map((d) => Padding(
-                      padding: const EdgeInsets.only(left: 6),
-                      child: ChoiceChip(
-                        label: Text(d[0].toUpperCase() + d.substring(1)),
-                        selected: _difficulty == d,
-                        onSelected: (_) => setState(() => _difficulty = d),
-                        selectedColor: _diffColor(d).withValues(alpha: 0.25),
-                        backgroundColor: AppColors.surfaceHigh,
-                        labelStyle: TextStyle(
-                          fontSize: 11,
-                          color: _difficulty == d ? _diffColor(d) : AppColors.textSecondary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        side: BorderSide(
-                          color: _difficulty == d ? _diffColor(d) : AppColors.surfaceLine,
-                          width: 0.5,
+                const SizedBox(height: 8),
+                Row(
+                  children: ['easy', 'medium', 'hard'].map((d) {
+                    final selected = _difficulty == d;
+                    final color = _diffColor(d);
+                    return Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(right: d == 'hard' ? 0 : 6),
+                        child: InkWell(
+                          onTap: () => setState(() => _difficulty = d),
+                          borderRadius: BorderRadius.circular(8),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: selected ? color.withValues(alpha: 0.18) : AppColors.surfaceHigh,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: selected ? color : AppColors.surfaceLine,
+                                width: selected ? 1.2 : 0.5,
+                              ),
+                            ),
+                            child: Text(
+                              d[0].toUpperCase() + d.substring(1),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: selected ? color : AppColors.textSecondary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    )),
+                    );
+                  }).toList(),
+                ),
               ],
             ),
           ),
@@ -240,7 +261,7 @@ class _LearnScreenState extends State<LearnScreen> with SingleTickerProviderStat
             const Spacer(),
             Flexible(child: Text(value, style: AppText.h3, overflow: TextOverflow.ellipsis, textAlign: TextAlign.end)),
             const SizedBox(width: 4),
-            const Icon(Icons.unfold_more_rounded, size: 16, color: AppColors.textTertiary),
+            Icon(Icons.unfold_more_rounded, size: 16, color: AppColors.textTertiary),
           ],
         ),
       ),
@@ -250,7 +271,7 @@ class _LearnScreenState extends State<LearnScreen> with SingleTickerProviderStat
   Widget _searchField() {
     return TextField(
       onChanged: (v) => setState(() => _query = v.trim().toLowerCase()),
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         hintText: 'Search chapters...',
         prefixIcon: Icon(Icons.search_rounded, color: AppColors.textTertiary),
       ),
@@ -269,7 +290,7 @@ class _LearnScreenState extends State<LearnScreen> with SingleTickerProviderStat
       return Container(
         padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: AppDecor.card(),
-        child: const Center(child: Text('No chapters match', style: AppText.bodyDim)),
+        child: Center(child: Text('No chapters match', style: AppText.bodyDim)),
       );
     }
     return Wrap(
@@ -297,11 +318,11 @@ class _LearnScreenState extends State<LearnScreen> with SingleTickerProviderStat
             const SizedBox(width: 8),
             Flexible(
               child: Text(chapterName,
-                  style: const TextStyle(fontSize: 13, color: AppColors.textPrimary, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 13, color: AppColors.textPrimary, fontWeight: FontWeight.w500),
                   overflow: TextOverflow.ellipsis, maxLines: 1),
             ),
             const SizedBox(width: 4),
-            const Icon(Icons.auto_awesome_rounded, color: AppColors.indigoBright, size: 12),
+            Icon(Icons.auto_awesome_rounded, color: AppColors.indigoBright, size: 12),
           ],
         ),
       ),
@@ -341,7 +362,7 @@ class _LearnScreenState extends State<LearnScreen> with SingleTickerProviderStat
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary),
+              Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary),
             ],
           ),
         ),
@@ -393,7 +414,7 @@ class _LearnScreenState extends State<LearnScreen> with SingleTickerProviderStat
         items: stages,
         labelOf: (s) => s.name,
         subtitleOf: (s) => '${s.papers.length} paper${s.papers.length == 1 ? '' : 's'}',
-        iconOf: (s) => const Icon(Icons.layers_rounded, color: AppColors.violet, size: 22),
+        iconOf: (s) => Icon(Icons.layers_rounded, color: AppColors.violet, size: 22),
       ),
     );
     if (result != null) {
@@ -417,7 +438,7 @@ class _LearnScreenState extends State<LearnScreen> with SingleTickerProviderStat
         items: papers,
         labelOf: (p) => p.name,
         subtitleOf: (p) => '${p.subjects.length} subject${p.subjects.length == 1 ? '' : 's'}',
-        iconOf: (p) => const Icon(Icons.description_rounded, color: AppColors.info, size: 22),
+        iconOf: (p) => Icon(Icons.description_rounded, color: AppColors.info, size: 22),
       ),
     );
     if (result != null) {
@@ -440,7 +461,7 @@ class _LearnScreenState extends State<LearnScreen> with SingleTickerProviderStat
         items: _paper!.subjects,
         labelOf: (s) => s.name,
         subtitleOf: (s) => '${s.chapters.length} chapters',
-        iconOf: (s) => const Icon(Icons.menu_book_rounded, color: AppColors.success, size: 22),
+        iconOf: (s) => Icon(Icons.menu_book_rounded, color: AppColors.success, size: 22),
       ),
     );
     if (result != null) setState(() => _subject = result);
@@ -456,7 +477,7 @@ class _LearnScreenState extends State<LearnScreen> with SingleTickerProviderStat
         padding: const EdgeInsets.all(16),
         shrinkWrap: true,
         children: [
-          const Text('Recent lessons', style: AppText.h2),
+          Text('Recent lessons', style: AppText.h2),
           const SizedBox(height: 12),
           ..._recent.map(_recentTile),
         ],
@@ -619,12 +640,12 @@ class _LessonScreenState extends State<LessonScreen> {
         actions: [
           if (_content.isNotEmpty) ...[
             IconButton(
-              icon: const Icon(Icons.bookmark_add_outlined, color: AppColors.indigoBright),
+              icon: Icon(Icons.bookmark_add_outlined, color: AppColors.indigoBright),
               tooltip: 'Save as note',
               onPressed: _saveAsNote,
             ),
             IconButton(
-              icon: const Icon(Icons.refresh_rounded, color: AppColors.indigoBright),
+              icon: Icon(Icons.refresh_rounded, color: AppColors.indigoBright),
               tooltip: 'Regenerate',
               onPressed: () => _load(forceRefresh: true),
             ),
@@ -653,7 +674,7 @@ class _LessonScreenState extends State<LessonScreen> {
                     children: [
                       const CircularProgressIndicator(),
                       const SizedBox(height: 14),
-                      const Text('Crafting your lesson...', style: AppText.bodyDim),
+                      Text('Crafting your lesson...', style: AppText.bodyDim),
                       const SizedBox(height: 4),
                       Text('Subject: ${widget.subject}', style: AppText.captionDim),
                     ],
@@ -667,7 +688,7 @@ class _LessonScreenState extends State<LessonScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Could not load lesson', style: AppText.h3),
+                    Text('Could not load lesson', style: AppText.h3),
                     const SizedBox(height: 6),
                     Text(_error ?? '', style: AppText.captionDim),
                     const SizedBox(height: 12),
@@ -761,7 +782,7 @@ class _ListPicker<T> extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary),
+                        Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary),
                       ],
                     ),
                   ),

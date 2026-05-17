@@ -402,7 +402,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
         padding: const EdgeInsets.symmetric(vertical: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         foregroundColor: AppColors.indigoBright,
-        side: const BorderSide(color: AppColors.indigoBright),
+        side: BorderSide(color: AppColors.indigoBright),
       ),
     );
 
@@ -486,7 +486,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
                             color: Colors.grey.shade200,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2)),
@@ -570,7 +570,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
                     const SizedBox(height: 16),
                     Text(
                       'Generating question 1 of ${widget.count}...',
-                      style: const TextStyle(fontSize: 16, color: AppColors.textSecondary),
+                      style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
                     ),
                   ],
                 ),
@@ -586,7 +586,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
                           'Question ${_currentIndex + 1} of ${widget.count}',
-                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppColors.textTertiary),
+                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppColors.textTertiary),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -606,7 +606,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
                               const SizedBox(width: 8),
                               Text(
                                 'Loading question ${_questions.length + 1} of ${widget.count}...',
-                                style: const TextStyle(fontSize: 12, color: AppColors.textTertiary),
+                                style: TextStyle(fontSize: 12, color: AppColors.textTertiary),
                               ),
                             ],
                           ),
@@ -668,7 +668,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
             tween: Tween(begin: 0.0, end: pct.toDouble()),
             duration: const Duration(milliseconds: 800),
             curve: Curves.easeOutCubic,
-            builder: (context, value, child) => Text('${value.round()}%', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
+            builder: (context, value, child) => Text('${value.round()}%', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
           ),
           const SizedBox(height: 8),
           TweenAnimationBuilder<double>(
@@ -693,7 +693,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
               onPressed: () => setState(() { _reviewing = true; _currentIndex = 0; }),
               icon: const Icon(Icons.visibility_outlined),
               label: const Text('Review Answers'),
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), foregroundColor: AppColors.indigoBright, side: const BorderSide(color: AppColors.indigoBright), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+              style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), foregroundColor: AppColors.indigoBright, side: BorderSide(color: AppColors.indigoBright), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
             )),
           ),
           const SizedBox(height: 12),
@@ -701,7 +701,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
             tween: Tween(begin: 0.0, end: 1.0),
             duration: const Duration(milliseconds: 700),
             builder: (context, value, child) => Transform.translate(offset: Offset(0, 20 * (1 - value)), child: Opacity(opacity: value, child: child)),
-            child: SizedBox(width: double.infinity, child: OutlinedButton(onPressed: () => Navigator.of(context).pop(), style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))), child: const Text('Back to Menu', style: TextStyle(color: AppColors.indigoBright, fontSize: 16, fontWeight: FontWeight.w700)))),
+            child: SizedBox(width: double.infinity, child: OutlinedButton(onPressed: () => Navigator.of(context).pop(), style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))), child: Text('Back to Menu', style: TextStyle(color: AppColors.indigoBright, fontSize: 16, fontWeight: FontWeight.w700)))),
           ),
         ],
       ),

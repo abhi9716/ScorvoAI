@@ -241,9 +241,9 @@ class _NotesScreenState extends State<NotesScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(Icons.search_off_rounded, size: 48, color: AppColors.textTertiary),
+                                Icon(Icons.search_off_rounded, size: 48, color: AppColors.textTertiary),
                                 const SizedBox(height: 12),
-                                Text('No results for "$_search"', style: const TextStyle(fontSize: 15, color: AppColors.textTertiary)),
+                                Text('No results for "$_search"', style: TextStyle(fontSize: 15, color: AppColors.textTertiary)),
                               ],
                             ),
                           );
@@ -345,14 +345,14 @@ class _NotesScreenState extends State<NotesScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis),
+                    child: Text(title, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis),
                   ),
                   const SizedBox(width: 8),
                   Text(date, style: const TextStyle(fontSize: 11, color: Color(0xffaaaaaa))),
                 ],
               ),
               const SizedBox(height: 4),
-              Text(content, style: const TextStyle(fontSize: 13, color: AppColors.textSecondary, height: 1.4), maxLines: 2, overflow: TextOverflow.ellipsis),
+              Text(content, style: TextStyle(fontSize: 13, color: AppColors.textSecondary, height: 1.4), maxLines: 2, overflow: TextOverflow.ellipsis),
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -362,7 +362,7 @@ class _NotesScreenState extends State<NotesScreen> {
                     _badge(subject, AppColors.indigoBright, Icons.book_rounded),
                   ],
                   const Spacer(),
-                  const Icon(Icons.chevron_right_rounded, size: 16, color: AppColors.textTertiary),
+                  Icon(Icons.chevron_right_rounded, size: 16, color: AppColors.textTertiary),
                 ],
               ),
             ],
@@ -415,12 +415,12 @@ class _NotesScreenState extends State<NotesScreen> {
             Container(
               width: 90, height: 90,
               decoration: BoxDecoration(color: AppColors.indigoBright.withValues(alpha: 0.08), shape: BoxShape.circle),
-              child: const Icon(Icons.note_alt_rounded, size: 48, color: AppColors.indigoBright),
+              child: Icon(Icons.note_alt_rounded, size: 48, color: AppColors.indigoBright),
             ),
             const SizedBox(height: 20),
-            const Text('No notes yet', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
+            Text('No notes yet', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
             const SizedBox(height: 8),
-            const Text('Save AI Tutor answers, scan handwritten notes, or write your own', textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: AppColors.textSecondary, height: 1.5)),
+            Text('Save AI Tutor answers, scan handwritten notes, or write your own', textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: AppColors.textSecondary, height: 1.5)),
             const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -487,10 +487,10 @@ class _NoteDetailSheet extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 0, 8, 8),
               child: Row(
                 children: [
-                  Expanded(child: Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.textPrimary))),
-                  IconButton(icon: const Icon(Icons.edit_rounded, color: AppColors.indigoBright, size: 22), onPressed: onEdit, tooltip: 'Edit'),
+                  Expanded(child: Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.textPrimary))),
+                  IconButton(icon: Icon(Icons.edit_rounded, color: AppColors.indigoBright, size: 22), onPressed: onEdit, tooltip: 'Edit'),
                   IconButton(
-                    icon: const Icon(Icons.copy_rounded, color: AppColors.textSecondary, size: 20),
+                    icon: Icon(Icons.copy_rounded, color: AppColors.textSecondary, size: 20),
                     tooltip: 'Copy',
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: content));
@@ -510,7 +510,7 @@ class _NoteDetailSheet extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
                 child: SelectableText(
                   content,
-                  style: const TextStyle(fontSize: 15, color: AppColors.textPrimary, height: 1.7),
+                  style: TextStyle(fontSize: 15, color: AppColors.textPrimary, height: 1.7),
                 ),
               ),
             ),
@@ -564,9 +564,9 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
               padding: const EdgeInsets.fromLTRB(20, 0, 12, 8),
               child: Row(
                 children: [
-                  Text(widget.sheetTitle, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
+                  Text(widget.sheetTitle, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
                   const Spacer(),
-                  TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel', style: TextStyle(color: AppColors.textTertiary))),
+                  TextButton(onPressed: () => Navigator.pop(context), child: Text('Cancel', style: TextStyle(color: AppColors.textTertiary))),
                   const SizedBox(width: 4),
                   ElevatedButton(
                     onPressed: _saving ? null : () async {
@@ -598,8 +598,8 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 4),
               child: TextField(
                 controller: widget.titleCtrl,
-                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
-                decoration: const InputDecoration(
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
+                decoration: InputDecoration(
                   hintText: 'Title...',
                   border: InputBorder.none,
                   hintStyle: TextStyle(color: AppColors.textTertiary, fontWeight: FontWeight.w400),
@@ -618,8 +618,8 @@ class _NoteEditorSheetState extends State<_NoteEditorSheet> {
                   controller: widget.contentCtrl,
                   maxLines: null,
                   autofocus: widget.contentCtrl.text.isEmpty,
-                  style: const TextStyle(fontSize: 15, color: AppColors.textPrimary, height: 1.6),
-                  decoration: const InputDecoration(
+                  style: TextStyle(fontSize: 15, color: AppColors.textPrimary, height: 1.6),
+                  decoration: InputDecoration(
                     hintText: 'Write your note here...',
                     border: InputBorder.none,
                     hintStyle: TextStyle(color: AppColors.textTertiary),
