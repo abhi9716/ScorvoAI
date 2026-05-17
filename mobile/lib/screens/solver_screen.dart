@@ -105,7 +105,7 @@ class _SolverScreenState extends State<SolverScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.surfaceHigh,
+      backgroundColor: AppColors.bg,
       appBar: AppBar(
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -156,9 +156,9 @@ class _SolverScreenState extends State<SolverScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
-                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 3))],
+                border: Border.all(color: AppColors.surfaceLine, width: 0.5),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -327,10 +327,10 @@ class _SolverScreenState extends State<SolverScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.surface,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: AppColors.surfaceLine),
-                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 3))],
+                  border: Border.all(color: AppColors.surfaceLine, width: 0.5),
                 ),
                 child: GptMarkdown(
                   _solution!,
