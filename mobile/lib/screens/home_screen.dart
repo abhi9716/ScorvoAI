@@ -46,20 +46,18 @@ class _HomeScreenState extends State<HomeScreen> {
         FirestoreService.getProfile(uid),
         FirestoreService.getInsights(uid),
         FirestoreService.getTodayDailyLesson(uid),
-        FirestoreService.getTodayCurrentAffairs(),
       ]);
       if (!mounted) return;
       setState(() {
         _profile = results[0] as UserProfile?;
         _insights = results[1] as Map<String, dynamic>?;
         _dailyLesson = results[2] as Map<String, dynamic>?;
-        _currentAffairs = (results[3] as List<Map<String, dynamic>>?) ?? [];
         _loading = false;
       });
       // Background-generate daily lesson if missing
       if (_dailyLesson == null && _profile != null) _generateDailyLesson();
-      // Background-fetch current affairs if missing
-      if (_currentAffairs.isEmpty) _fetchCurrentAffairs();
+      // Always fetch fresh current affairs (backend has its own 1h cache).
+      _fetchCurrentAffairs();
     } catch (_) {
       if (mounted) setState(() => _loading = false);
     }
@@ -431,50 +429,73 @@ class _HomeScreenState extends State<HomeScreen> {
     final category = item['category'] as String? ?? 'General';
     final exam = item['exam_angle'] as String? ?? '';
     final sourceUrl = item['source_url'] as String? ?? '';
-    return InkWell(
-      onTap: sourceUrl.isEmpty ? null : () => launchUrlString(sourceUrl),
-      borderRadius: BorderRadius.circular(AppRadius.md),
-      child: Container(
-        margin: const EdgeInsets.only(top: 10),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: AppColors.surfaceHigh,
-          borderRadius: BorderRadius.circular(AppRadius.md),
-          border: Border(left: BorderSide(color: _categoryColor(category), width: 3)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: AppDecor.chip(_categoryColor(category)),
-                  child: Text(category.toUpperCase(),
-                      style: TextStyle(fontSize: 9, color: _categoryColor(category), fontWeight: FontWeight.w700, letterSpacing: 0.5)),
-                ),
-                const Spacer(),
-                if (sourceUrl.isNotEmpty)
-                  Row(children: const [
-                    Icon(Icons.open_in_new_rounded, size: 12, color: AppColors.textTertiary),
-                    SizedBox(width: 3),
-                    Text('Source', style: TextStyle(fontSize: 10, color: AppColors.textTertiary)),
-                  ]),
-              ],
-            ),
-            const SizedBox(height: 6),
-            Text(headline, style: AppText.h3),
-            const SizedBox(height: 4),
-            Text(summary, style: AppText.bodyDim, maxLines: 3, overflow: TextOverflow.ellipsis),
-            if (exam.isNotEmpty) ...[
+    final hasSource = sourceUrl.isNotEmpty && sourceUrl.startsWith('http');
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: hasSource ? () => launchUrlString(sourceUrl) : null,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        child: Container(
+          margin: const EdgeInsets.only(top: 10),
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: AppColors.surfaceHigh,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            border: Border(left: BorderSide(color: _categoryColor(category), width: 3)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: AppDecor.chip(_categoryColor(category)),
+                    child: Text(category.toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 9, color: _categoryColor(category),
+                            fontWeight: FontWeight.w700, letterSpacing: 0.5)),
+                  ),
+                ],
+              ),
               const SizedBox(height: 6),
-              Row(children: [
-                const Icon(Icons.school_rounded, size: 12, color: AppColors.textTertiary),
-                const SizedBox(width: 4),
-                Expanded(child: Text(exam, style: AppText.captionDim, maxLines: 2)),
-              ]),
+              Text(headline, style: AppText.h3),
+              const SizedBox(height: 4),
+              Text(summary, style: AppText.bodyDim, maxLines: 3, overflow: TextOverflow.ellipsis),
+              if (exam.isNotEmpty) ...[
+                const SizedBox(height: 6),
+                Row(children: [
+                  const Icon(Icons.school_rounded, size: 12, color: AppColors.textTertiary),
+                  const SizedBox(width: 4),
+                  Expanded(child: Text(exam, style: AppText.captionDim, maxLines: 2)),
+                ]),
+              ],
+              if (hasSource) ...[
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    const Icon(Icons.open_in_new_rounded, size: 14, color: AppColors.indigoBright),
+                    const SizedBox(width: 4),
+                    Text('Read full article',
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.indigoBright,
+                            fontWeight: FontWeight.w600)),
+                    const Spacer(),
+                    Flexible(
+                      child: Text(
+                        Uri.tryParse(sourceUrl)?.host ?? '',
+                        style: AppText.captionDim,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

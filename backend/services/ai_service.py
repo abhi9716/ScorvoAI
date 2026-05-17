@@ -149,20 +149,22 @@ Math rules: plain text only — 3/4, √16=4, x²=25. NO LaTeX commands. Use Uni
 Length: 350-550 words. Focused, exam-oriented, and friendly tone."""
 
 CURRENT_AFFAIRS_PROMPT = """You are a current affairs editor for Indian government exam aspirants (UPSC, SSC, Banking, Railway).
-Given the following REAL news search results, extract the {count} most exam-relevant items.
+Given the following REAL news search results, extract the {count} most exam-relevant and RECENT items.
 
 For each chosen item, produce:
 - A short eye-catching headline (under 70 chars)
 - 2-3 sentence summary covering Who/What/When/Why-it-matters
 - One "exam angle" line: which exam/subject this typically appears in
 - A category tag from: Polity, Economy, Sci-Tech, International, Environment, Defence, Sports, Awards
-- "source_url": the URL from the search results that backs this item
+- "source_url": the EXACT URL from the search results that backs this item — never invent or modify URLs
 
-Rules:
-- Use ONLY information present in the search results below — do NOT invent facts
+STRICT RULES:
+- ONLY use information present in the search results below — do NOT invent facts
+- ONLY pick items from the LAST 7 DAYS — skip anything older (check dates in the content)
+- ONLY include items whose source_url is one of the URLs in the search results
 - Prioritize: government schemes, RBI/economic data, key bills/acts, major appointments, India in international relations, awards, science/tech breakthroughs, important reports/indices
-- Skip clickbait, opinion pieces, and entertainment news
-- If fewer than {count} relevant items exist, return what you have
+- Skip clickbait, opinion pieces, sports gossip, and entertainment news
+- If fewer than {count} recent relevant items exist, return what you have — never pad with old news
 
 Output ONLY valid JSON in this exact shape (no markdown):
 [
@@ -171,7 +173,7 @@ Output ONLY valid JSON in this exact shape (no markdown):
     "summary": "...",
     "exam_angle": "...",
     "category": "...",
-    "source_url": "..."
+    "source_url": "https://..."
   }}
 ]
 
@@ -570,12 +572,20 @@ async def ollama_web_search(query: str, max_results: int = 10) -> list[dict]:
 
 
 async def generate_current_affairs(count: int = 5) -> list[dict]:
-    """Fetch real news via web search, then have the LLM extract the top exam-relevant items."""
-    # 1) Fetch real news from the web
-    today = json.dumps(__import__("datetime").date.today().isoformat()).strip('"')
+    """Fetch real news via web search, then have the LLM extract the top exam-relevant items.
+
+    Uses recency-biased queries so results favor today/this-week's news.
+    """
+    # 1) Fetch real news from the web — recency-biased query strings
+    from datetime import date, timedelta
+    today_iso = date.today().isoformat()
+    today_human = date.today().strftime("%d %B %Y")
+    week_ago = (date.today() - timedelta(days=7)).isoformat()
     queries = [
-        f"India current affairs today {today} UPSC SSC",
-        f"India government schemes RBI policy news {today}",
+        f"India breaking news today {today_human}",
+        f"India current affairs this week {week_ago} to {today_iso}",
+        f"India government schemes RBI policy bills appointments {today_human}",
+        f"India today latest news UPSC SSC IBPS",
     ]
     all_results: list[dict] = []
     try:
@@ -633,16 +643,28 @@ async def generate_current_affairs(count: int = 5) -> list[dict]:
             raw = raw.strip()
 
         items = json.loads(raw)
+        # Map known URLs from search results for fallback
+        known_urls = {r.get("url", ""): r.get("title", "") for r in unique if r.get("url")}
+        url_list = list(known_urls.keys())
+
         out = []
-        for item in items[:count]:
+        for idx, item in enumerate(items[:count]):
             if not isinstance(item, dict):
                 continue
+            headline = str(item.get("headline", ""))[:120]
+            url = str(item.get("source_url", "")).strip()
+            # If the LLM didn't return a valid URL, fall back to the i-th search result
+            if not url.startswith("http") or url not in known_urls:
+                if idx < len(url_list):
+                    url = url_list[idx]
+                else:
+                    continue  # drop items with no traceable source
             out.append({
-                "headline": str(item.get("headline", ""))[:120],
+                "headline": headline,
                 "summary": str(item.get("summary", "")),
                 "exam_angle": str(item.get("exam_angle", "")),
                 "category": str(item.get("category", "General")),
-                "source_url": str(item.get("source_url", "")),
+                "source_url": url,
             })
         return out
     except Exception as e:

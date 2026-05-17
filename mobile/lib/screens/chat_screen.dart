@@ -7,6 +7,7 @@ import 'package:scorvoai/services/api.dart';
 import 'package:scorvoai/services/firestore_service.dart';
 import 'package:scorvoai/models/user_profile.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:scorvoai/theme/app_theme.dart';
 
 const _suggestions = [
   'Difference between Fundamental Rights and Duties?',
@@ -384,7 +385,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
           TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, true),
-            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xff1a73e8), foregroundColor: Colors.white),
+            style: ElevatedButton.styleFrom(backgroundColor: AppColors.indigoBright, foregroundColor: Colors.white),
             child: const Text('Save'),
           ),
         ],
@@ -436,10 +437,10 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: const Color(0xff1a73e8),
+                            color: AppColors.indigoBright,
                             shape: BoxShape.circle,
                             boxShadow: [
-                              BoxShadow(color: const Color(0xff1a73e8).withValues(alpha: 0.4), blurRadius: 10),
+                              BoxShadow(color: AppColors.indigoBright.withValues(alpha: 0.4), blurRadius: 10),
                             ],
                           ),
                           child: const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white, size: 22),
@@ -461,7 +462,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
       flexibleSpace: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xff1a73e8), Color(0xff0d47a1)],
+            colors: [AppColors.indigoBright, Color(0xff0d47a1)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -513,13 +514,13 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
             height: 90,
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xff1a73e8), Color(0xff0d47a1)],
+                colors: [AppColors.indigoBright, Color(0xff0d47a1)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(26),
               boxShadow: [
-                BoxShadow(color: const Color(0xff1a73e8).withValues(alpha: 0.35), blurRadius: 24, spreadRadius: 2),
+                BoxShadow(color: AppColors.indigoBright.withValues(alpha: 0.35), blurRadius: 24, spreadRadius: 2),
               ],
             ),
             child: const Icon(Icons.smart_toy_rounded, color: Colors.white, size: 50),
@@ -527,20 +528,20 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
           const SizedBox(height: 20),
           const Text(
             'Ask me anything!',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: Color(0xff1a1a2e)),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: AppColors.textPrimary),
           ),
           const SizedBox(height: 8),
           const Text(
             'Your AI-powered tutor for government exam preparation',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14, color: Color(0xff666666), height: 1.4),
+            style: TextStyle(fontSize: 14, color: AppColors.textSecondary, height: 1.4),
           ),
           const SizedBox(height: 32),
           Row(
             children: [
-              Container(width: 3, height: 16, decoration: BoxDecoration(color: const Color(0xff1a73e8), borderRadius: BorderRadius.circular(2))),
+              Container(width: 3, height: 16, decoration: BoxDecoration(color: AppColors.indigoBright, borderRadius: BorderRadius.circular(2))),
               const SizedBox(width: 8),
-              const Text('Try asking', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Color(0xff1a1a2e))),
+              const Text('Try asking', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
             ],
           ),
           const SizedBox(height: 12),
@@ -562,12 +563,12 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.auto_awesome_rounded, size: 16, color: Color(0xff1a73e8)),
+                      const Icon(Icons.auto_awesome_rounded, size: 16, color: AppColors.indigoBright),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(
                           _suggestions[i],
-                          style: const TextStyle(fontSize: 14, color: Color(0xff333333), height: 1.3),
+                          style: const TextStyle(fontSize: 14, color: AppColors.textPrimary, height: 1.3),
                         ),
                       ),
                       const Icon(Icons.chevron_right_rounded, size: 18, color: Color(0xffcccccc)),
@@ -600,7 +601,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
       height: size,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xff1a73e8), Color(0xff0d47a1)],
+          colors: [AppColors.indigoBright, Color(0xff0d47a1)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -645,7 +646,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                         child: Container(
                           width: 8, height: 8,
                           decoration: BoxDecoration(
-                            color: Color.lerp(const Color(0xffbbbbbb), const Color(0xff1a73e8), bounce)!,
+                            color: Color.lerp(const Color(0xffbbbbbb), AppColors.indigoBright, bounce)!,
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -678,7 +679,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xff1a73e8), Color(0xff1254b3)],
+                    colors: [AppColors.indigoBright, Color(0xff1254b3)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -689,7 +690,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                     bottomRight: Radius.circular(18),
                   ),
                   boxShadow: [
-                    BoxShadow(color: const Color(0xff1a73e8).withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 3)),
+                    BoxShadow(color: AppColors.indigoBright.withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 3)),
                   ],
                 ),
                 child: Text(
@@ -735,12 +736,12 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                     if (msg.text.isEmpty && msg.isStreaming)
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 4),
-                        child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xff1a73e8))),
+                        child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.indigoBright)),
                       )
                     else
                       GptMarkdown(
                         msg.isStreaming ? '${msg.text}▋' : msg.text,
-                        style: const TextStyle(fontSize: 14.5, color: Color(0xff1a1a2e), height: 1.55),
+                        style: const TextStyle(fontSize: 14.5, color: AppColors.textPrimary, height: 1.55),
                         useDollarSignsForLatex: false,
                         onLinkTap: (url, _) => launchUrlString(url),
                         tableBuilder: (context, rows, textStyle, config) {
@@ -766,7 +767,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                                     style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: row.isHeader ? FontWeight.w600 : FontWeight.w400,
-                                      color: const Color(0xff333333),
+                                      color: AppColors.textPrimary,
                                     ),
                                     useDollarSignsForLatex: false,
                                   ),
@@ -862,14 +863,14 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                   gradient: LinearGradient(
                     colors: _isStreaming
                         ? [Colors.grey.shade300, Colors.grey.shade300]
-                        : [const Color(0xff1a73e8), const Color(0xff0d47a1)],
+                        : [AppColors.indigoBright, const Color(0xff0d47a1)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(14),
                   boxShadow: _isStreaming
                       ? []
-                      : [BoxShadow(color: const Color(0xff1a73e8).withValues(alpha: 0.4), blurRadius: 8, offset: const Offset(0, 3))],
+                      : [BoxShadow(color: AppColors.indigoBright.withValues(alpha: 0.4), blurRadius: 8, offset: const Offset(0, 3))],
                 ),
                 child: Material(
                   color: Colors.transparent,

@@ -49,7 +49,10 @@ class _MainShellState extends State<MainShell> {
               label: const Text('Ask AI', style: TextStyle(fontWeight: FontWeight.w700)),
               elevation: 4,
             ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      // Notes tab has its own FABs on the right — put Ask AI on the left there.
+      floatingActionButtonLocation: _currentIndex == 3
+          ? FloatingActionButtonLocation.startFloat
+          : FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: AppColors.bgElevated,

@@ -12,9 +12,10 @@ _cache: dict = {"date": None, "items": [], "generated_at": None}
 async def get_current_affairs(count: int = 5, refresh: bool = False):
     """Return today's top current affairs items. Cached for 6 hours."""
     now = datetime.now()
+    # Cache for 1 hour so news stays fresh while keeping Ollama load low.
     fresh = (
         _cache["generated_at"] is not None
-        and (now - _cache["generated_at"]) < timedelta(hours=6)
+        and (now - _cache["generated_at"]) < timedelta(hours=1)
         and len(_cache["items"]) >= count
     )
     if fresh and not refresh:
