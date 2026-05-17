@@ -195,9 +195,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         const SizedBox(width: 10),
         _statBox('$total', 'Quizzes', '📝', AppColors.indigoBright),
         const SizedBox(width: 10),
-        _statBox('${avg.toStringAsFixed(0)}%', 'Avg', '📊', const Color(0xff34a853)),
+        _statBox('${avg.toStringAsFixed(0)}%', 'Avg', '📊', AppColors.success),
         const SizedBox(width: 10),
-        _statBox('${best.toStringAsFixed(0)}%', 'Best', '⭐', const Color(0xfffbbc05)),
+        _statBox('${best.toStringAsFixed(0)}%', 'Best', '⭐', AppColors.warning),
       ],
     );
   }
@@ -258,8 +258,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               Container(
                 padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(color: const Color(0xff34a853).withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
-                child: const Icon(Icons.flag_rounded, color: Color(0xff34a853), size: 18),
+                decoration: BoxDecoration(color: AppColors.success.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
+                child: Icon(Icons.flag_rounded, color: AppColors.success, size: 18),
               ),
               const SizedBox(width: 10),
               Text('Study Goals', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
@@ -272,11 +272,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: _profile!.goals.map((g) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: const Color(0xff34a853).withValues(alpha: 0.07),
+                color: AppColors.success.withValues(alpha: 0.07),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: const Color(0xff34a853).withValues(alpha: 0.3)),
+                border: Border.all(color: AppColors.success.withValues(alpha: 0.3)),
               ),
-              child: Text(g, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Color(0xff34a853))),
+              child: Text(g, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.success)),
             )).toList(),
           ),
         ],
@@ -288,7 +288,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final avg = _insights?['avg_score'] as double? ?? 0.0;
     final passRate = _insights?['pass_rate'] as double? ?? 0.0;
     final totalQ = _insights?['total_questions'] as int? ?? 0;
-    final color = avg >= 70 ? const Color(0xff34a853) : avg >= 50 ? const Color(0xfffbbc05) : const Color(0xffea4335);
+    final color = avg >= 70 ? AppColors.success : avg >= 50 ? AppColors.warning : AppColors.danger;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -316,9 +316,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               Expanded(child: _perfStat('Avg Score', '${avg.toStringAsFixed(1)}%', color)),
               Container(width: 1, height: 40, color: AppColors.surfaceLine),
-              Expanded(child: _perfStat('Pass Rate', '${passRate.toStringAsFixed(0)}%', const Color(0xff34a853))),
+              Expanded(child: _perfStat('Pass Rate', '${passRate.toStringAsFixed(0)}%', AppColors.success)),
               Container(width: 1, height: 40, color: AppColors.surfaceLine),
-              Expanded(child: _perfStat('Qs Done', '$totalQ', const Color(0xff9c27b0))),
+              Expanded(child: _perfStat('Qs Done', '$totalQ', AppColors.violet)),
             ],
           ),
           const SizedBox(height: 14),

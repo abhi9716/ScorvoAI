@@ -108,9 +108,9 @@ class _SolverScreenState extends State<SolverScreen> {
       backgroundColor: AppColors.surfaceHigh,
       appBar: AppBar(
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xff34a853), Color(0xff1b7a3e)],
+              colors: [AppColors.success, Color(0xff1b7a3e)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -165,7 +165,7 @@ class _SolverScreenState extends State<SolverScreen> {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.edit_note_rounded, color: Color(0xff34a853), size: 20),
+                      Icon(Icons.edit_note_rounded, color: AppColors.success, size: 20),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text('Enter your question',
@@ -173,9 +173,9 @@ class _SolverScreenState extends State<SolverScreen> {
                       ),
                       // OCR scan buttons
                       if (_scanning)
-                        const SizedBox(
+                        SizedBox(
                           width: 20, height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xff34a853)),
+                          child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.success),
                         )
                       else ...[
                         Tooltip(
@@ -186,10 +186,10 @@ class _SolverScreenState extends State<SolverScreen> {
                             child: Container(
                               padding: const EdgeInsets.all(7),
                               decoration: BoxDecoration(
-                                color: const Color(0xff34a853).withValues(alpha: 0.1),
+                                color: AppColors.success.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: const Icon(Icons.camera_alt_rounded, color: Color(0xff34a853), size: 20),
+                              child: Icon(Icons.camera_alt_rounded, color: AppColors.success, size: 20),
                             ),
                           ),
                         ),
@@ -213,10 +213,10 @@ class _SolverScreenState extends State<SolverScreen> {
                     ],
                   ),
                   if (_scanning)
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.only(top: 8),
                       child: Text('Scanning image for text...',
-                          style: TextStyle(fontSize: 12, color: Color(0xff34a853))),
+                          style: TextStyle(fontSize: 12, color: AppColors.success)),
                     ),
                   const SizedBox(height: 12),
                   TextField(
@@ -237,10 +237,10 @@ class _SolverScreenState extends State<SolverScreen> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: Color(0xff34a853), width: 2),
+                        borderSide: BorderSide(color: AppColors.success, width: 2),
                       ),
                       filled: true,
-                      fillColor: const Color(0xfff8fff9),
+                      fillColor: AppColors.surface,
                       contentPadding: const EdgeInsets.all(14),
                     ),
                   ),
@@ -259,12 +259,12 @@ class _SolverScreenState extends State<SolverScreen> {
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff34a853),
+                        backgroundColor: AppColors.success,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         elevation: 3,
-                        shadowColor: const Color(0xff34a853).withValues(alpha: 0.4),
+                        shadowColor: AppColors.success.withValues(alpha: 0.4),
                       ),
                     ),
                   ),
@@ -283,9 +283,9 @@ class _SolverScreenState extends State<SolverScreen> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
-                          boxShadow: [BoxShadow(color: const Color(0xff34a853).withValues(alpha: 0.2), blurRadius: 20)],
+                          boxShadow: [BoxShadow(color: AppColors.success.withValues(alpha: 0.2), blurRadius: 20)],
                         ),
-                        child: const CircularProgressIndicator(color: Color(0xff34a853), strokeWidth: 3),
+                        child: CircularProgressIndicator(color: AppColors.success, strokeWidth: 3),
                       ),
                       const SizedBox(height: 16),
                       Text('Solving your question...',
@@ -305,10 +305,10 @@ class _SolverScreenState extends State<SolverScreen> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: const Color(0xff34a853).withValues(alpha: 0.1),
+                      color: AppColors.success.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Icon(Icons.lightbulb_rounded, color: Color(0xff34a853), size: 18),
+                    child: Icon(Icons.lightbulb_rounded, color: AppColors.success, size: 18),
                   ),
                   const SizedBox(width: 10),
                   Text('Solution',
@@ -318,7 +318,7 @@ class _SolverScreenState extends State<SolverScreen> {
                     onPressed: _copy,
                     icon: const Icon(Icons.copy_rounded, size: 16),
                     label: const Text('Copy'),
-                    style: TextButton.styleFrom(foregroundColor: const Color(0xff34a853)),
+                    style: TextButton.styleFrom(foregroundColor: AppColors.success),
                   ),
                 ],
               ),
@@ -329,7 +329,7 @@ class _SolverScreenState extends State<SolverScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xffe0f0e8)),
+                  border: Border.all(color: AppColors.surfaceLine),
                   boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 3))],
                 ),
                 child: GptMarkdown(
@@ -342,11 +342,11 @@ class _SolverScreenState extends State<SolverScreen> {
                       margin: const EdgeInsets.symmetric(vertical: 8),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: const Color(0xffe0f0e8)),
+                        border: Border.all(color: AppColors.surfaceLine),
                       ),
                       clipBehavior: Clip.antiAlias,
                       child: Table(
-                        border: TableBorder.all(color: const Color(0xffe0f0e8), width: 0.5),
+                        border: TableBorder.all(color: AppColors.surfaceLine, width: 0.5),
                         defaultColumnWidth: const FlexColumnWidth(),
                         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                         children: rows
@@ -387,8 +387,8 @@ class _SolverScreenState extends State<SolverScreen> {
                   label: const Text('Solve Another Question',
                       style: TextStyle(fontWeight: FontWeight.w600)),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xff34a853),
-                    side: const BorderSide(color: Color(0xff34a853)),
+                    foregroundColor: AppColors.success,
+                    side: BorderSide(color: AppColors.success),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),

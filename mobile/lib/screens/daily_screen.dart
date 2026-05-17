@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scorvoai/theme/app_theme.dart';
 import 'package:scorvoai/services/api.dart';
 
 class DailyScreen extends StatefulWidget {
@@ -53,7 +54,7 @@ class _DailyScreenState extends State<DailyScreen> {
       final pct = ((score / total) * 100).round();
       return Scaffold(
         backgroundColor: AppColors.bg,
-        appBar: AppBar(title: const Text('Daily Result'), backgroundColor: const Color(0xffea4335), foregroundColor: Colors.white),
+        appBar: AppBar(title: const Text('Daily Result'), backgroundColor: AppColors.danger, foregroundColor: Colors.white),
         body: SafeArea(
           child: Center(
             child: Padding(
@@ -63,9 +64,9 @@ class _DailyScreenState extends State<DailyScreen> {
                 children: [
                   const Text('Daily Challenge Done!', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800)),
                   const SizedBox(height: 24),
-                  Container(width: 120, height: 120, decoration: const BoxDecoration(color: Color(0xffea4335), shape: BoxShape.circle), alignment: Alignment.center, child: Text('$score/$total', style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w800, color: Colors.white))),
+                  Container(width: 120, height: 120, decoration: BoxDecoration(color: AppColors.danger, shape: BoxShape.circle), alignment: Alignment.center, child: Text('$score/$total', style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w800, color: Colors.white))),
                   const SizedBox(height: 16),
-                  Text('$pct%', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: Color(0xff666666))),
+                  Text('$pct%', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
                 ],
               ),
             ),
@@ -76,7 +77,7 @@ class _DailyScreenState extends State<DailyScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.bg,
-      appBar: AppBar(title: const Text('Daily Challenge'), backgroundColor: const Color(0xffea4335), foregroundColor: Colors.white),
+      appBar: AppBar(title: const Text('Daily Challenge'), backgroundColor: AppColors.danger, foregroundColor: Colors.white),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -85,7 +86,7 @@ class _DailyScreenState extends State<DailyScreen> {
             children: [
               const Text('Daily Challenge', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700)),
               const SizedBox(height: 4),
-              const Text('New questions every day!', style: TextStyle(fontSize: 15, color: Color(0xff666666))),
+              Text('New questions every day!', style: TextStyle(fontSize: 15, color: AppColors.textSecondary)),
               const SizedBox(height: 20),
               ..._questions.asMap().entries.map((e) {
                 final idx = e.key;
@@ -99,7 +100,7 @@ class _DailyScreenState extends State<DailyScreen> {
                       children: [
                         Text('${idx + 1}. ${q['question']}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                         const SizedBox(height: 4),
-                        Text(q['subject'], style: const TextStyle(fontSize: 12, color: Color(0xffea4335), fontWeight: FontWeight.w600)),
+                        Text(q['subject'], style: TextStyle(fontSize: 12, color: AppColors.danger, fontWeight: FontWeight.w600)),
                         const SizedBox(height: 12),
                         ...List.generate((q['options'] as List).length, (oi) {
                           final selected = _answers[idx] == oi;
@@ -108,14 +109,14 @@ class _DailyScreenState extends State<DailyScreen> {
                             child: SizedBox(
                               width: double.infinity,
                               child: Material(
-                                color: selected ? const Color(0xffea4335) : Colors.grey.shade100,
+                                color: selected ? AppColors.danger : AppColors.surfaceHigh,
                                 borderRadius: BorderRadius.circular(8),
                                 child: InkWell(
                                   borderRadius: BorderRadius.circular(8),
                                   onTap: () => setState(() => _answers[idx] = oi),
                                   child: Container(
                                     padding: const EdgeInsets.all(12),
-                                    child: Text('${String.fromCharCode(65 + oi)}. ${(q['options'] as List)[oi]}', style: TextStyle(fontSize: 15, color: selected ? Colors.white : const Color(0xff333333), fontWeight: selected ? FontWeight.w600 : FontWeight.normal)),
+                                    child: Text('${String.fromCharCode(65 + oi)}. ${(q['options'] as List)[oi]}', style: TextStyle(fontSize: 15, color: selected ? Colors.white : AppColors.textPrimary, fontWeight: selected ? FontWeight.w600 : FontWeight.normal)),
                                   ),
                                 ),
                               ),
@@ -130,7 +131,7 @@ class _DailyScreenState extends State<DailyScreen> {
               const SizedBox(height: 8),
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(onPressed: _submitting ? null : _submit, style: ElevatedButton.styleFrom(backgroundColor: const Color(0xffea4335), padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))), child: _submitting ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)) : const Text('Submit', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700))),
+                child: ElevatedButton(onPressed: _submitting ? null : _submit, style: ElevatedButton.styleFrom(backgroundColor: AppColors.danger, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))), child: _submitting ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)) : const Text('Submit', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700))),
               ),
             ],
           ),

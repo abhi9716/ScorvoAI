@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scorvoai/theme/app_theme.dart';
 import 'package:scorvoai/services/api.dart';
 import 'package:scorvoai/screens/quiz_play_screen.dart';
 
@@ -91,7 +92,7 @@ class _QuizTypeScreenState extends State<QuizTypeScreen> with SingleTickerProvid
 
     return Scaffold(
       backgroundColor: AppColors.bg,
-      appBar: AppBar(title: const Text('Custom Quiz'), backgroundColor: const Color(0xff1a73e8), foregroundColor: Colors.white),
+      appBar: AppBar(title: const Text('Custom Quiz'), backgroundColor: AppColors.indigoBright, foregroundColor: Colors.white),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -114,10 +115,10 @@ class _QuizTypeScreenState extends State<QuizTypeScreen> with SingleTickerProvid
                   Color chipColor;
                   String emoji;
                   switch (d) {
-                    case QuizDifficulty.easy: chipColor = const Color(0xff34a853); emoji = '🟢'; break;
-                    case QuizDifficulty.medium: chipColor = const Color(0xfffbbc05); emoji = '🟡'; break;
-                    case QuizDifficulty.hard: chipColor = const Color(0xffea4335); emoji = '🔴'; break;
-                    case QuizDifficulty.mixed: chipColor = const Color(0xff9c27b0); emoji = '🎲'; break;
+                    case QuizDifficulty.easy: chipColor = AppColors.success; emoji = '🟢'; break;
+                    case QuizDifficulty.medium: chipColor = AppColors.warning; emoji = '🟡'; break;
+                    case QuizDifficulty.hard: chipColor = AppColors.danger; emoji = '🔴'; break;
+                    case QuizDifficulty.mixed: chipColor = AppColors.violet; emoji = '🎲'; break;
                   }
                   return TweenAnimationBuilder<double>(
                     tween: Tween(begin: 0.0, end: 1.0),
@@ -130,7 +131,7 @@ class _QuizTypeScreenState extends State<QuizTypeScreen> with SingleTickerProvid
                       selectedColor: chipColor,
                       checkmarkColor: Colors.white,
                       labelStyle: TextStyle(
-                        color: selected ? Colors.white : const Color(0xff333333),
+                        color: selected ? Colors.white : AppColors.textPrimary,
                         fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
                       ),
                     ),
@@ -145,7 +146,7 @@ class _QuizTypeScreenState extends State<QuizTypeScreen> with SingleTickerProvid
                 Center(
                   child: Column(
                     children: [
-                      const Text('Failed to load subjects', style: TextStyle(color: Color(0xff999999))),
+                      Text('Failed to load subjects', style: TextStyle(color: AppColors.textTertiary)),
                       TextButton(onPressed: () { setState(() => _loading = true); _loadSubjects(); }, child: const Text('Retry')),
                     ],
                   ),
@@ -164,10 +165,10 @@ class _QuizTypeScreenState extends State<QuizTypeScreen> with SingleTickerProvid
                       label: Text(e.key),
                       selected: selected,
                       onSelected: (_) => _toggleSubject(e.key),
-                      selectedColor: const Color(0xff1a73e8),
+                      selectedColor: AppColors.indigoBright,
                       checkmarkColor: Colors.white,
                       labelStyle: TextStyle(
-                        color: selected ? Colors.white : const Color(0xff333333),
+                        color: selected ? Colors.white : AppColors.textPrimary,
                         fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
                       ),
                     ),
@@ -179,7 +180,7 @@ class _QuizTypeScreenState extends State<QuizTypeScreen> with SingleTickerProvid
               _sectionTitle('Chapters (tap to toggle)'),
               const SizedBox(height: 10),
               if (_selectedSubjects.isEmpty)
-                const Text('Select subjects first to see chapters', style: TextStyle(color: Color(0xff999999), fontSize: 14)),
+                Text('Select subjects first to see chapters', style: TextStyle(color: AppColors.textTertiary, fontSize: 14)),
               if (_selectedSubjects.isNotEmpty)
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
@@ -205,7 +206,7 @@ class _QuizTypeScreenState extends State<QuizTypeScreen> with SingleTickerProvid
                                 _selectedChapters.add(ch);
                               }
                             }),
-                            selectedColor: const Color(0xff34a853),
+                            selectedColor: AppColors.success,
                             checkmarkColor: Colors.white,
                             labelStyle: TextStyle(
                               color: selected ? Colors.white : const Color(0xff555555),
@@ -243,15 +244,15 @@ class _QuizTypeScreenState extends State<QuizTypeScreen> with SingleTickerProvid
                   child: ElevatedButton(
                     onPressed: _startQuiz,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xfffbbc05),
+                      backgroundColor: AppColors.warning,
                       padding: const EdgeInsets.symmetric(vertical: 18),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                       elevation: 6,
-                      shadowColor: const Color(0xfffbbc05).withValues(alpha: 0.4),
+                      shadowColor: AppColors.warning.withValues(alpha: 0.4),
                     ),
                     child: Text(
                       '🚀  Start Quiz (${_questionCount} Qs)',
-                      style: const TextStyle(color: Color(0xff333333), fontSize: 18, fontWeight: FontWeight.w800),
+                      style: TextStyle(color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.w800),
                     ),
                   ),
                 ),
@@ -264,6 +265,6 @@ class _QuizTypeScreenState extends State<QuizTypeScreen> with SingleTickerProvid
   }
 
   Widget _sectionTitle(String title) {
-    return Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xff333333)));
+    return Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.textPrimary));
   }
 }

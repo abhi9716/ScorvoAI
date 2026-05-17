@@ -196,12 +196,12 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
   }
 
   Color _difficultyColor(String? diff) {
-    if (diff == null) return const Color(0xff9c27b0);
+    if (diff == null) return AppColors.violet;
     switch (diff.toLowerCase()) {
-      case 'easy': return const Color(0xff34a853);
-      case 'medium': return const Color(0xfffbbc05);
-      case 'hard': return const Color(0xffea4335);
-      default: return const Color(0xff9c27b0);
+      case 'easy': return AppColors.success;
+      case 'medium': return AppColors.warning;
+      case 'hard': return AppColors.danger;
+      default: return AppColors.violet;
     }
   }
 
@@ -226,7 +226,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
           color = AppColors.indigoBright;
           size = 12;
         } else if (arrived && _answers.containsKey(i)) {
-          color = const Color(0xff34a853);
+          color = AppColors.success;
           size = 10;
         } else if (arrived) {
           color = AppColors.textTertiary;
@@ -280,9 +280,9 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
               runSpacing: 4,
               children: [
                 _pill(q['subject'] ?? 'Mixed', AppColors.indigoBright, AppColors.indigoBright.withValues(alpha: 0.15)),
-                _pill(q['chapter'] ?? 'General', const Color(0xff9c27b0), const Color(0xfff3e5f5)),
+                _pill(q['chapter'] ?? 'General', AppColors.violet, const Color(0xfff3e5f5)),
                 _pill(q['difficulty']?.toString().isNotEmpty == true ? (q['difficulty'] as String).toUpperCase() : 'MIXED', _difficultyColor(q['difficulty']), _difficultyColor(q['difficulty']).withValues(alpha: 0.1)),
-                if (q['ai_generated'] == true) _pill('AI', const Color(0xff34a853), const Color(0xffe8f5e9)),
+                if (q['ai_generated'] == true) _pill('AI', AppColors.success, const Color(0xffe8f5e9)),
               ],
             ),
             const SizedBox(height: 14),
@@ -299,12 +299,12 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
                   border = AppColors.success;
                   text = AppColors.textPrimary;
                   weight = FontWeight.w600;
-                  icon = const Icon(Icons.check_circle, color: AppColors.success, size: 22);
+                  icon = Icon(Icons.check_circle, color: AppColors.success, size: 22);
                 } else if (optIdx == selectedAnswer) {
                   bg = AppColors.danger.withValues(alpha: 0.15);
                   border = AppColors.danger;
                   text = AppColors.textPrimary;
-                  icon = const Icon(Icons.cancel, color: AppColors.danger, size: 22);
+                  icon = Icon(Icons.cancel, color: AppColors.danger, size: 22);
                 } else {
                   bg = AppColors.surfaceHigh;
                   border = AppColors.surfaceLine;
@@ -385,7 +385,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
 
   Widget _buildNavigation() {
     final isMixed = widget.mode == QuizMode.mixed;
-    final accentColor = isMixed ? const Color(0xfffbbc05) : const Color(0xff34a853);
+    final accentColor = isMixed ? AppColors.warning : AppColors.success;
     final isLast = _questions.isNotEmpty && _currentIndex == _questions.length - 1;
     final canGoNext = _currentIndex + 1 < _questions.length;
     final canGoPrev = _currentIndex > 0;
@@ -483,7 +483,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
                       ? Container(
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade200,
+                            color: AppColors.surfaceLine,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Row(
@@ -516,7 +516,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     final isMixed = widget.mode == QuizMode.mixed;
-    final accentColor = isMixed ? const Color(0xfffbbc05) : const Color(0xff34a853);
+    final accentColor = isMixed ? AppColors.warning : AppColors.success;
     final fgColor = isMixed ? AppColors.textPrimary : Colors.white;
 
     return Scaffold(
@@ -620,7 +620,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
 
   Widget _buildResult() {
     final isMixed = widget.mode == QuizMode.mixed;
-    final accentColor = isMixed ? const Color(0xfffbbc05) : const Color(0xff34a853);
+    final accentColor = isMixed ? AppColors.warning : AppColors.success;
     final score = _result!['score'] as int;
     final total = _result!['total'] as int;
     final pct = total > 0 ? ((score / total) * 100).round() : 0;
@@ -716,9 +716,9 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> with SingleTickerProvid
   }
 
   Color _performanceColor(int pct) {
-    if (pct >= 80) return const Color(0xff34a853);
-    if (pct >= 60) return const Color(0xfffbbc05);
-    if (pct >= 40) return const Color(0xffea4335);
-    return const Color(0xffea4335);
+    if (pct >= 80) return AppColors.success;
+    if (pct >= 60) return AppColors.warning;
+    if (pct >= 40) return AppColors.danger;
+    return AppColors.danger;
   }
 }

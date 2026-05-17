@@ -5,31 +5,31 @@ import 'package:flutter/services.dart';
 /// All AppColors.X tokens are theme-aware getters; calling code does not
 /// need to pass BuildContext. Toggle via [AppColors.setDark].
 
-// ── Dark palette (default) ──────────────────────────────────────────────
+// ── Dark palette — deep midnight w/ subtle indigo tint ─────────────────
 class _Dark {
-  static const bg = Color(0xff0a0a14);
-  static const bgElevated = Color(0xff111120);
-  static const surface = Color(0xff16162a);
-  static const surfaceHigh = Color(0xff1d1d36);
-  static const surfaceLine = Color(0xff262640);
+  static const bg = Color(0xff0b0b18);            // deep midnight (warm-tinted)
+  static const bgElevated = Color(0xff13132a);    // app-bar / nav-bar
+  static const surface = Color(0xff1a1a36);       // cards
+  static const surfaceHigh = Color(0xff242449);   // raised surfaces
+  static const surfaceLine = Color(0xff2f2f58);   // borders + dividers
 
-  static const textPrimary = Color(0xfff5f5fa);
-  static const textSecondary = Color(0xffa9a9c2);
-  static const textTertiary = Color(0xff6c6c89);
+  static const textPrimary = Color(0xfff6f6fb);   // near-white, slight cool
+  static const textSecondary = Color(0xffb4b4cf); // softer secondary
+  static const textTertiary = Color(0xff7a7a99);  // for captions/metadata
   static const textOnAccent = Color(0xffffffff);
 }
 
-// ── Light palette ───────────────────────────────────────────────────────
+// ── Light palette — cool warm-white w/ indigo accents ──────────────────
 class _Light {
-  static const bg = Color(0xfff7f8fb);
-  static const bgElevated = Color(0xffffffff);
-  static const surface = Color(0xffffffff);
-  static const surfaceHigh = Color(0xfff1f3f8);
-  static const surfaceLine = Color(0xffe5e7ed);
+  static const bg = Color(0xfff7f8fd);            // cool off-white
+  static const bgElevated = Color(0xffffffff);    // app-bar / nav-bar
+  static const surface = Color(0xffffffff);       // cards
+  static const surfaceHigh = Color(0xfff0f1f8);   // raised surfaces (slight indigo)
+  static const surfaceLine = Color(0xffdfe1ec);   // borders, subtly indigo
 
-  static const textPrimary = Color(0xff1a1a2e);
-  static const textSecondary = Color(0xff5a5a72);
-  static const textTertiary = Color(0xff9099aa);
+  static const textPrimary = Color(0xff14142b);   // near-black, slight cool
+  static const textSecondary = Color(0xff52527a); // mid-tone, indigo-leaning
+  static const textTertiary = Color(0xff8c8caa);  // captions
   static const textOnAccent = Color(0xffffffff);
 }
 

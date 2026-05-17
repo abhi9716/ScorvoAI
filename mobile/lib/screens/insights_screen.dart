@@ -120,22 +120,22 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
             _trendChart(recentScores),
             const SizedBox(height: 16),
           ],
-          _sectionHeader('Score Distribution', Icons.bar_chart_rounded, const Color(0xff9c27b0)),
+          _sectionHeader('Score Distribution', Icons.bar_chart_rounded, AppColors.violet),
           const SizedBox(height: 10),
           _distributionCard(dist, total),
           const SizedBox(height: 16),
           if (weak.isNotEmpty) ...[
-            _sectionHeader('Focus Areas', Icons.gps_fixed_rounded, const Color(0xffea4335)),
+            _sectionHeader('Focus Areas', Icons.gps_fixed_rounded, AppColors.danger),
             const SizedBox(height: 10),
-            _topicsList(weak.take(5).toList(), const Color(0xffea4335), isWeak: true),
+            _topicsList(weak.take(5).toList(), AppColors.danger, isWeak: true),
             const SizedBox(height: 10),
             _practiceButton(weak),
             const SizedBox(height: 16),
           ],
           if (strong.isNotEmpty) ...[
-            _sectionHeader('Strengths', Icons.star_rounded, const Color(0xff34a853)),
+            _sectionHeader('Strengths', Icons.star_rounded, AppColors.success),
             const SizedBox(height: 10),
-            _topicsList(strong.take(5).toList(), const Color(0xff34a853), isWeak: false),
+            _topicsList(strong.take(5).toList(), AppColors.success, isWeak: false),
             const SizedBox(height: 16),
           ],
         ],
@@ -264,7 +264,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
                 show: true,
                 getDotPainter: (spot, _, __, ___) => FlDotCirclePainter(
                   radius: 4,
-                  color: spot.y >= 60 ? const Color(0xff34a853) : const Color(0xffea4335),
+                  color: spot.y >= 60 ? AppColors.success : AppColors.danger,
                   strokeWidth: 1.5,
                   strokeColor: Colors.white,
                 ),
@@ -276,7 +276,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
             LineChartBarData(
               spots: [FlSpot(0, 60), FlSpot((scores.length - 1).toDouble(), 60)],
               isCurved: false,
-              color: const Color(0xffea4335).withValues(alpha: 0.5),
+              color: AppColors.danger.withValues(alpha: 0.5),
               barWidth: 1,
               dashArray: [5, 5],
               dotData: const FlDotData(show: false),
@@ -289,10 +289,10 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
 
   Widget _distributionCard(Map<String, int> dist, int total) {
     final bands = [
-      ('0–25%', dist['0-25'] ?? 0, const Color(0xffea4335), 'Needs Work'),
-      ('26–50%', dist['26-50'] ?? 0, const Color(0xfffbbc05), 'Below Avg'),
+      ('0–25%', dist['0-25'] ?? 0, AppColors.danger, 'Needs Work'),
+      ('26–50%', dist['26-50'] ?? 0, AppColors.warning, 'Below Avg'),
       ('51–75%', dist['51-75'] ?? 0, AppColors.indigoBright, 'Good'),
-      ('76–100%', dist['76-100'] ?? 0, const Color(0xff34a853), 'Excellent'),
+      ('76–100%', dist['76-100'] ?? 0, AppColors.success, 'Excellent'),
     ];
     return Container(
       padding: const EdgeInsets.all(16),
@@ -342,11 +342,11 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
           final avg = (t['avg'] as num).toDouble();
           final attempts = t['attempts'] as int? ?? 0;
           final c = isWeak
-              ? Color.lerp(const Color(0xffea4335), const Color(0xfffbbc05), avg / 60) ?? color
-              : Color.lerp(AppColors.indigoBright, const Color(0xff34a853), (avg - 60).clamp(0, 40) / 40) ?? color;
+              ? Color.lerp(AppColors.danger, AppColors.warning, avg / 60) ?? color
+              : Color.lerp(AppColors.indigoBright, AppColors.success, (avg - 60).clamp(0, 40) / 40) ?? color;
           return Column(
             children: [
-              if (e.key > 0) const Divider(height: 1, color: Color(0xfff5f5f5)),
+              if (e.key > 0) Divider(height: 1, color: AppColors.surfaceLine),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 child: Row(
@@ -410,7 +410,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
           ),
         ),
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xffea4335),
+          backgroundColor: AppColors.danger,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 14),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -551,10 +551,10 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
 
     const order = ['easy', 'medium', 'hard', 'mixed'];
     const configs = {
-      'easy': (Icons.sentiment_satisfied_rounded, Color(0xff34a853), 'Easy'),
-      'medium': (Icons.sentiment_neutral_rounded, Color(0xfffbbc05), 'Medium'),
-      'hard': (Icons.sentiment_dissatisfied_rounded, Color(0xffea4335), 'Hard'),
-      'mixed': (Icons.shuffle_rounded, Color(0xff9c27b0), 'Mixed'),
+      'easy': (Icons.sentiment_satisfied_rounded, AppColors.success, 'Easy'),
+      'medium': (Icons.sentiment_neutral_rounded, AppColors.warning, 'Medium'),
+      'hard': (Icons.sentiment_dissatisfied_rounded, AppColors.danger, 'Hard'),
+      'mixed': (Icons.shuffle_rounded, AppColors.violet, 'Mixed'),
     };
 
     final sorted = order.where((k) => diff.containsKey(k)).toList();
@@ -571,7 +571,7 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
             final avg = (v['avg'] as num).toDouble();
             final total = v['total'] as int? ?? 0;
             final correct = v['correct'] as int? ?? 0;
-            final cfg = configs[key] ?? (Icons.help_rounded, const Color(0xff9c27b0), key);
+            final cfg = configs[key] ?? (Icons.help_rounded, AppColors.violet, key);
             final color = cfg.$2;
             return Padding(
               padding: const EdgeInsets.only(bottom: 12),
@@ -645,10 +645,10 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
     final Color color;
     if (hardAvg >= 70) {
       tip = 'Excellent! You\'re crushing hard questions. Consider attempting full mock exams.';
-      color = const Color(0xff34a853);
+      color = AppColors.success;
     } else if (easyAvg < 60) {
       tip = 'Focus on strengthening fundamentals — easy questions need more attention.';
-      color = const Color(0xffea4335);
+      color = AppColors.danger;
     } else {
       tip = 'Good base! Practice more hard questions to boost your overall score.';
       color = AppColors.indigoBright;
@@ -699,13 +699,13 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
         padding: const EdgeInsets.all(16),
         children: [
           if (weak.isNotEmpty) ...[
-            _sectionHeader('Weak Chapters', Icons.trending_down_rounded, const Color(0xffea4335)),
+            _sectionHeader('Weak Chapters', Icons.trending_down_rounded, AppColors.danger),
             const SizedBox(height: 10),
             ..._chapterCards(weak),
             const SizedBox(height: 16),
           ],
           if (strong.isNotEmpty) ...[
-            _sectionHeader('Strong Chapters', Icons.trending_up_rounded, const Color(0xff34a853)),
+            _sectionHeader('Strong Chapters', Icons.trending_up_rounded, AppColors.success),
             const SizedBox(height: 10),
             ..._chapterCards(strong.take(10).toList()),
           ],
@@ -785,10 +785,10 @@ class _InsightsScreenState extends State<InsightsScreen> with SingleTickerProvid
   // ── Shared Helpers ────────────────────────────────────────────────────────
 
   Color _scoreColor(double avg) {
-    if (avg >= 75) return const Color(0xff34a853);
+    if (avg >= 75) return AppColors.success;
     if (avg >= 50) return AppColors.indigoBright;
-    if (avg >= 35) return const Color(0xfffbbc05);
-    return const Color(0xffea4335);
+    if (avg >= 35) return AppColors.warning;
+    return AppColors.danger;
   }
 
   Widget _sectionHeader(String title, IconData icon, Color color) {

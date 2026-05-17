@@ -188,7 +188,7 @@ class _NotesScreenState extends State<NotesScreen> {
                 onChanged: (v) => setState(() => _search = v),
                 decoration: InputDecoration(
                   hintText: 'Search notes...',
-                  prefixIcon: const Icon(Icons.search_rounded, color: Color(0xffaaaaaa)),
+                  prefixIcon: Icon(Icons.search_rounded, color: AppColors.textTertiary),
                   filled: true,
                   fillColor: AppColors.surface,
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
@@ -267,7 +267,7 @@ class _NotesScreenState extends State<NotesScreen> {
             FloatingActionButton.small(
               heroTag: 'cam',
               onPressed: () => _scanOCR(ImageSource.camera),
-              backgroundColor: const Color(0xff9c27b0),
+              backgroundColor: AppColors.violet,
               tooltip: 'Scan with camera',
               child: const Icon(Icons.camera_alt_rounded, color: Colors.white, size: 20),
             ),
@@ -276,7 +276,7 @@ class _NotesScreenState extends State<NotesScreen> {
           FloatingActionButton.small(
             heroTag: 'gal',
             onPressed: () => _scanOCR(ImageSource.gallery),
-            backgroundColor: const Color(0xff34a853),
+            backgroundColor: AppColors.success,
             tooltip: 'Scan from gallery',
             child: const Icon(Icons.photo_library_rounded, color: Colors.white, size: 20),
           ),
@@ -348,7 +348,7 @@ class _NotesScreenState extends State<NotesScreen> {
                     child: Text(title, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis),
                   ),
                   const SizedBox(width: 8),
-                  Text(date, style: const TextStyle(fontSize: 11, color: Color(0xffaaaaaa))),
+                  Text(date, style: TextStyle(fontSize: 11, color: AppColors.textTertiary)),
                 ],
               ),
               const SizedBox(height: 4),
@@ -390,9 +390,9 @@ class _NotesScreenState extends State<NotesScreen> {
   (String, Color, IconData) _sourceCfg(String s) {
     switch (s) {
       case 'ai_tutor': return ('AI Tutor', AppColors.indigoBright, Icons.smart_toy_rounded);
-      case 'quiz_explanation': return ('Quiz', const Color(0xfffbbc05), Icons.quiz_rounded);
-      case 'ocr_scan': return ('Scanned', const Color(0xff9c27b0), Icons.document_scanner_rounded);
-      default: return ('Manual', const Color(0xff34a853), Icons.edit_note_rounded);
+      case 'quiz_explanation': return ('Quiz', AppColors.warning, Icons.quiz_rounded);
+      case 'ocr_scan': return ('Scanned', AppColors.violet, Icons.document_scanner_rounded);
+      default: return ('Manual', AppColors.success, Icons.edit_note_rounded);
     }
   }
 
@@ -427,9 +427,9 @@ class _NotesScreenState extends State<NotesScreen> {
               children: [
                 _emptyHint(Icons.smart_toy_rounded, 'AI Tutor', AppColors.indigoBright),
                 const SizedBox(width: 16),
-                _emptyHint(Icons.document_scanner_rounded, 'Scan', const Color(0xff9c27b0)),
+                _emptyHint(Icons.document_scanner_rounded, 'Scan', AppColors.violet),
                 const SizedBox(width: 16),
-                _emptyHint(Icons.edit_note_rounded, 'Write', const Color(0xff34a853)),
+                _emptyHint(Icons.edit_note_rounded, 'Write', AppColors.success),
               ],
             ),
           ],
