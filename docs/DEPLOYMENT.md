@@ -89,9 +89,90 @@ Ollama on a separate GPU VPS and set `OLLAMA_BASE` to its public IP/domain.
 
 ### 2.3 Ollama hosting
 
-`gemma4:31b-cloud` needs roughly **20–30 GB RAM**. Recommended:
-- GPU VPS (Hetzner, Lambda Labs, RunPod) — 1× NVIDIA A10 (24 GB) or T4 minimum
-- Pin Ollama to a stable IP; backend connects via `OLLAMA_BASE` (set as env var if remote)
+`gemma4:31b-cloud` is the cloud-served variant — actual compute runs on
+Ollama's infrastructure. You still need a local Ollama process to proxy
+requests with your API key. Two options:
+
+- **Co-locate Ollama with the backend** — simpler. Either install Ollama
+  in the same container (Dockerfile addition below) or run Ollama as a
+  separate Railway service.
+- **External Ollama** — single GPU VPS (Hetzner / Lambda / RunPod), all
+  backends point at it via `OLLAMA_BASE`.
+
+### 2.4 Railway deployment — step by step
+
+ScorvoAI ships with `backend/railway.json` so Railway knows how to build
+and run the backend.
+
+**Step 1.** Spin up Railway CLI:
+```bash
+npm install -g @railway/cli
+railway login
+```
+
+**Step 2.** From the repo root, create the project:
+```bash
+cd backend
+railway init                          # creates the project
+```
+
+**Step 3.** Set required env vars:
+```bash
+railway variables set \
+  OLLAMA_API_KEY=oa_xxxxxxxx \
+  OLLAMA_BASE=http://ollama:11434 \
+  CORS_ORIGINS=*
+```
+
+**Step 4.** Add Ollama as a second service in the same Railway project:
+- In Railway UI: `+ New` → `Empty Service` → name it `ollama`
+- Settings → Source → `Deploy from Docker Image` → `ollama/ollama:latest`
+- Variables → add `OLLAMA_HOST=0.0.0.0`
+- Volumes → add a 50 GB volume mounted at `/root/.ollama`
+- Networking → Private Networking on (so your backend can reach it at
+  `http://ollama:11434` within the Railway project)
+- After it boots, open a shell in the Ollama service and run:
+  ```bash
+  ollama pull gemma4:31b-cloud
+  ```
+
+**Step 5.** Deploy the backend:
+```bash
+railway up                            # pushes + builds + runs
+railway domain                        # mints a public HTTPS URL
+```
+
+**Step 6.** Verify it's healthy:
+```bash
+curl https://<your-domain>/health     # should return {"status":"ok"}
+curl https://<your-domain>/ready      # should return {"ready":true, ...}
+```
+
+If `/ready` returns `ready: false`, the JSON `checks` field tells you
+exactly what's wrong (Ollama unreachable / model not pulled / API key
+missing).
+
+**Step 7.** Update mobile `lib/config.dart`:
+```dart
+const apiBaseUrl = 'https://<your-railway-domain>';
+```
+Rebuild the APK and you're live.
+
+### 2.5 Pre-flight check (always run before deploy)
+
+```bash
+cd backend
+python preflight.py
+```
+
+This runs 5 checks in order and tells you exactly what to fix:
+1. Required env vars are set
+2. Ollama server is reachable
+3. Gemma 4 model is pulled
+4. Ollama Cloud web-search API key is valid
+5. End-to-end inference returns a real response
+
+Exits non-zero if any check fails — perfect for CI gates.
 
 ### 2.4 Firewall
 
