@@ -14,7 +14,22 @@ OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY", "")
 # See NOTICE for attribution. Override via env var to test variants.
 GEMMA_MODEL = os.getenv("GEMMA_MODEL", "gemma4:31b-cloud")
 
-CHAT_SYSTEM_PROMPT = """You are an expert Indian government exam tutor for SSC, UPSC, Banking exams.
+
+def _ollama_err(e: Exception, where: str) -> Exception:
+    """Convert raw httpx errors into actionable messages mentioning the URL."""
+    name = type(e).__name__
+    msg = str(e) or "(no message)"
+    if "ConnectError" in name or "Connect" in name or "connection" in msg.lower():
+        return Exception(
+            f"{where}: cannot reach Ollama at {OLLAMA_BASE}. "
+            f"If the backend runs in Docker, set OLLAMA_BASE to "
+            f"http://host.docker.internal:11434 (and pass "
+            f"--add-host=host.docker.internal:host-gateway) or run with "
+            f"--network=host. Underlying: {name}: {msg}"
+        )
+    return Exception(f"{where}: {name}: {msg}")
+
+CHAT_SYSTEM_PROMPT = r"""You are an expert Indian government exam tutor for SSC, UPSC, Banking exams.
 
 You write in Markdown format for a mobile app. Follow these rules EXACTLY:
 
@@ -70,7 +85,7 @@ MATH RULES (CRITICAL):
 - For exponents use Unicode superscripts (² ³) or "x^n" notation
 - Keep explanations simple for exam preparation"""
 
-QUIZ_GEN_PROMPT = """You are an expert Indian government exam question setter for SSC, UPSC, and Banking exams.
+QUIZ_GEN_PROMPT = r"""You are an expert Indian government exam question setter for SSC, UPSC, and Banking exams.
 Generate {count} multiple choice questions for: {topics}
 Difficulty level: {difficulty}
 
@@ -222,7 +237,7 @@ async def get_chat_response(question: str) -> str:
             else:
                 raise Exception(f"Ollama error: {response.status_code}")
     except Exception as e:
-        raise Exception(f"Ollama API error: {str(e)}")
+        raise _ollama_err(e, "chat")
 
 async def get_chat_response_stream(question: str):
     try:
@@ -253,7 +268,7 @@ async def get_chat_response_stream(question: str):
                         except:
                             pass
     except Exception as e:
-        raise Exception(f"Ollama API error: {str(e)}")
+        raise _ollama_err(e, "chat")
 
 async def get_solve_response(question: str) -> str:
     try:
@@ -293,7 +308,7 @@ async def get_solve_response(question: str) -> str:
 
         return raw.strip()
     except Exception as e:
-        raise Exception(f"Ollama API error: {str(e)}")
+        raise _ollama_err(e, "chat")
 
 def _validate_question(q: dict, subjects, chapters, difficulty) -> dict | None:
     if not isinstance(q, dict) or "question" not in q or "options" not in q or "correct" not in q:
@@ -350,7 +365,7 @@ async def generate_quiz_questions(count: int, subjects: list[str] | None = None,
                 validated.append(v)
         return validated
     except Exception as e:
-        raise Exception(f"Quiz generation failed: {str(e)}")
+        raise _ollama_err(e, "quiz")
 
 async def generate_quiz_questions_stream(count: int, subjects: list[str] | None = None, chapters: list[str] | None = None, difficulty: str | None = None):
     topics_str = ", ".join(subjects) if subjects else "Mixed (Quantitative Aptitude, General Knowledge, Reasoning)"
@@ -460,7 +475,7 @@ async def classify_note_content(content: str) -> dict:
             "tags": tags_str,
         }
     except Exception as e:
-        raise Exception(f"Note classification failed: {str(e)}")
+        raise _ollama_err(e, "note_classify")
 
 async def format_note_content(content: str) -> str:
     try:
@@ -483,7 +498,7 @@ async def format_note_content(content: str) -> str:
             else:
                 raise Exception(f"Ollama error: {response.status_code}")
     except Exception as e:
-        raise Exception(f"Note formatting failed: {str(e)}")
+        raise _ollama_err(e, "note_format")
 
 async def generate_lesson(subject: str, chapter: str, difficulty: str = "medium", exam: str = "") -> str:
     """Generate an AI-powered micro-lesson for a chapter."""
@@ -511,7 +526,7 @@ async def generate_lesson(subject: str, chapter: str, difficulty: str = "medium"
                 return response.json()["message"]["content"].strip()
             raise Exception(f"Ollama error: {response.status_code}")
     except Exception as e:
-        raise Exception(f"Lesson generation failed: {str(e)}")
+        raise _ollama_err(e, "lesson")
 
 async def generate_lesson_stream(subject: str, chapter: str, difficulty: str = "medium", exam: str = ""):
     """Stream lesson generation token by token."""
@@ -548,7 +563,7 @@ async def generate_lesson_stream(subject: str, chapter: str, difficulty: str = "
                         except Exception:
                             pass
     except Exception as e:
-        raise Exception(f"Lesson stream failed: {str(e)}")
+        raise _ollama_err(e, "lesson_stream")
 
 async def ollama_web_search(query: str, max_results: int = 10) -> list[dict]:
     """Real web search via Ollama Cloud Web Search API.
@@ -668,4 +683,4 @@ async def generate_current_affairs(count: int = 5) -> list[dict]:
             })
         return out
     except Exception as e:
-        raise Exception(f"Current affairs generation failed: {str(e)}")
+        raise _ollama_err(e, "current_affairs")

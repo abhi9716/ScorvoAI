@@ -223,6 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(examLabel,
+                          maxLines: 1, overflow: TextOverflow.ellipsis,
                           style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w600)),
                     ),
                   ],

@@ -480,13 +480,19 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
             child: const Icon(Icons.smart_toy_rounded, color: Colors.white, size: 22),
           ),
           const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('AI Tutor', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white)),
-              Text(_userProfile?.examLabel ?? 'SSC · UPSC · Banking', style: const TextStyle(fontSize: 11, color: Colors.white70, height: 1.2)),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('AI Tutor',
+                    maxLines: 1, overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white)),
+                Text(_userProfile?.examLabel ?? 'SSC · UPSC · Banking',
+                    maxLines: 1, overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 11, color: Colors.white70, height: 1.2)),
+              ],
+            ),
           ),
         ],
       ),
@@ -548,7 +554,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
           ...List.generate(_suggestions.length, (i) => Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: Material(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(12),
               child: InkWell(
                 onTap: () => _send(_suggestions[i]),
@@ -622,7 +628,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(4),
                 topRight: Radius.circular(18),
@@ -719,7 +725,7 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
               child: Container(
                 padding: const EdgeInsets.fromLTRB(14, 12, 14, 8),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.surface,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(4),
                     topRight: Radius.circular(18),
@@ -819,11 +825,9 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
 
   Widget _buildInputBar() {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 12, offset: const Offset(0, -3)),
-        ],
+      decoration: const BoxDecoration(
+        color: AppColors.bgElevated,
+        border: Border(top: BorderSide(color: AppColors.surfaceLine, width: 0.5)),
       ),
       child: SafeArea(
         top: false,
@@ -844,10 +848,13 @@ class _ChatScreenState extends State<ChatScreen> with SingleTickerProviderStateM
                     maxLines: 5,
                     minLines: 1,
                     textCapitalization: TextCapitalization.sentences,
+                    style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
+                    cursorColor: AppColors.indigoBright,
                     decoration: const InputDecoration(
                       hintText: 'Ask anything about your exam...',
                       hintStyle: TextStyle(color: AppColors.textTertiary, fontSize: 14),
                       border: InputBorder.none,
+                      filled: false,
                       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     ),
                     onSubmitted: _isStreaming ? null : (v) => _send(v),

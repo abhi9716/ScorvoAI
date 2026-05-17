@@ -160,7 +160,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Text(p.examLabel, style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w600)),
+                  child: Text(p.examLabel,
+                      maxLines: 1, overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w600)),
                 ),
               ],
             ),
@@ -233,7 +235,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: AppColors.indigoBright.withValues(alpha: 0.3)),
         ),
-        child: Text(_profile!.examLabel, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.indigoBright)),
+        child: Text(_profile!.examLabel,
+            maxLines: 1, overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.indigoBright)),
       ),
     );
   }

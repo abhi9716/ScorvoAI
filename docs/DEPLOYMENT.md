@@ -53,7 +53,39 @@ gcloud run deploy scorvoai-api \
 ```
 OLLAMA_API_KEY=oa_xxx           # Required for real current affairs
 CORS_ORIGINS=https://...        # Tighten from "*"
+OLLAMA_BASE=http://...:11434    # Where to reach Ollama (see 2.2.1)
 ```
+
+### 2.2.1 ⚠️ Critical: backend in Docker → Ollama on host
+
+When the backend runs in a Docker container but Ollama runs on the host
+machine, `http://localhost:11434` inside the container points to the
+container itself (not the host) and every Ollama call fails with
+`httpx.ConnectError: All connection attempts failed`.
+
+Three ways to fix:
+
+```bash
+# Option A (Linux only — simplest): share the host network
+docker run --network=host -e OLLAMA_API_KEY scorvoai-api
+
+# Option B (cross-platform): bridge to host
+docker run -p 8000:8000 \
+  --add-host=host.docker.internal:host-gateway \
+  -e OLLAMA_BASE=http://host.docker.internal:11434 \
+  -e OLLAMA_API_KEY \
+  scorvoai-api
+
+# Option C: point at a remote Ollama server's LAN IP
+docker run -p 8000:8000 \
+  -e OLLAMA_BASE=http://192.168.1.42:11434 \
+  -e OLLAMA_API_KEY \
+  scorvoai-api
+```
+
+On Cloud Run / Railway / Render, the same applies — Ollama must live at a
+URL the container can reach over the network. Most production deploys host
+Ollama on a separate GPU VPS and set `OLLAMA_BASE` to its public IP/domain.
 
 ### 2.3 Ollama hosting
 
