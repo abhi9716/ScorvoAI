@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # ScorvoAI backend endpoint smoke test.
 #
+# Live demo backend: https://scorvoai-production.up.railway.app
+# Demo APK:          https://github.com/abhi9716/ScorvoAI/raw/main/releases/scorvoai-v1.0.0.apk
+#
 # Usage:
 #   ./test_endpoints.sh                                              # tests local backend
 #   ./test_endpoints.sh https://scorvoai-production.up.railway.app    # tests prod

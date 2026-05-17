@@ -144,6 +144,10 @@ Screen recordings, full-bleed phone mockups, smooth tab transitions. Each segmen
 ```
 ScorvoAI · scorvo.ai
 Built on Gemma 4 + Ollama
+
+Try it now:
+APK     github.com/abhi9716/ScorvoAI/raw/main/releases/scorvoai-v1.0.0.apk
+API     scorvoai-production.up.railway.app
 ```
 
 ---

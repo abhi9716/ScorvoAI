@@ -18,7 +18,9 @@
 - **Kaggle Writeup** — this document (≈ 1,450 words, under the 1,500 cap)
 - **Public Code Repository** — https://github.com/abhi9716/ScorvoAI (Apache 2.0)
 - **Public Video** — `<YouTube link to be added>` (3 min, see [`VIDEO_SCRIPT.md`](VIDEO_SCRIPT.md))
-- **Live Demo** — `<APK download link>` + `<live backend URL>` (deployment plan in [`DEPLOYMENT.md`](DEPLOYMENT.md))
+- **Live Demo**:
+    - 📱 **Android APK**: https://github.com/abhi9716/ScorvoAI/raw/main/releases/scorvoai-v1.0.0.apk (89 MB)
+    - 🌐 **Backend API**: https://scorvoai-production.up.railway.app (try `/health`, `/ready`, `/current-affairs?count=3`)
 - **Cover Image** — `<media gallery>`
 
 ## 🧪 How Judges Can Verify Gemma 4 Is Real

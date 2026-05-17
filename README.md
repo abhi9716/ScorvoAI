@@ -12,6 +12,16 @@
   <a href="LICENSE"><img alt="License: Apache 2.0" src="https://img.shields.io/badge/License-Apache%202.0-blue"></a>
 </p>
 
+## 📲 Try it now
+
+| Resource | Link |
+| -------- | ---- |
+| **Android APK** (89 MB) | [Download `scorvoai-v1.0.0.apk`](https://github.com/abhi9716/ScorvoAI/raw/main/releases/scorvoai-v1.0.0.apk) |
+| **Live Backend** | https://scorvoai-production.up.railway.app |
+| **Health check** | `curl https://scorvoai-production.up.railway.app/health` |
+
+> Install the APK on any Android 7+ device. Sign in with Google → pick your exam → done. The app talks to the live backend automatically.
+
 ---
 
 ## ✨ Features
