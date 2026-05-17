@@ -4,15 +4,30 @@ End-to-end checklist for shipping ScorvoAI to the **Google Play Store** with a p
 
 ---
 
+## 🚀 Live reference deployment
+
+A working production deploy you can use as a reference (and to verify your local app):
+
+| Resource | URL |
+| -------- | --- |
+| **Backend** | https://scorvoai-production.up.railway.app |
+| **Smoke test** | `curl https://scorvoai-production.up.railway.app/health` → `{"status":"ok"}` |
+| **Diagnostics** | `curl https://scorvoai-production.up.railway.app/ready \| jq .` |
+| **Android APK** (89 MB, signed debug-release) | https://github.com/abhi9716/ScorvoAI/raw/main/releases/scorvoai-v1.0.0.apk |
+| **Run full suite** | `./backend/test_endpoints.sh https://scorvoai-production.up.railway.app` |
+
+This deploy uses **Ollama Cloud directly** (no local Ollama, no separate Ollama service) — see [§2.3](#23-ollama-hosting) for why this is simplest and how it works.
+
+---
+
 ## 1. Pre-flight checklist
 
 | Item | Status |
 | ---- | ------ |
 | Firebase project on the **Blaze** plan (Spark works for low volume but reads/writes are capped) | ☐ |
-| Ollama running on a dedicated server with `gemma4:31b-cloud` pulled | ☐ |
 | Ollama Cloud API key issued at https://ollama.com/settings/keys | ☐ |
 | Backend hosted with HTTPS (Cloud Run / Railway / Fly.io / a VPS with nginx + Let's Encrypt) | ☐ |
-| Domain configured (e.g. `api.scorvo.ai`) | ☐ |
+| Domain configured (e.g. `api.scorvo.ai`) — optional, Railway gives a free `*.up.railway.app` | ☐ |
 | Play Console developer account created (USD 25 one-time fee) | ☐ |
 | App icon (`1024 × 1024` PNG, no alpha) | ☐ |
 | Feature graphic (`1024 × 500`) | ☐ |
@@ -89,15 +104,27 @@ Ollama on a separate GPU VPS and set `OLLAMA_BASE` to its public IP/domain.
 
 ### 2.3 Ollama hosting
 
-`gemma4:31b-cloud` is the cloud-served variant — actual compute runs on
-Ollama's infrastructure. You still need a local Ollama process to proxy
-requests with your API key. Two options:
+`gemma4:31b-cloud` is a cloud-served model — compute runs on Ollama's
+infrastructure, not yours. ScorvoAI's backend calls `https://ollama.com/api/chat`
+directly with `Authorization: Bearer <OLLAMA_API_KEY>` (see
+`backend/services/ai_service.py:_ollama_headers`). **No local Ollama is
+needed in production.**
 
-- **Co-locate Ollama with the backend** — simpler. Either install Ollama
-  in the same container (Dockerfile addition below) or run Ollama as a
-  separate Railway service.
-- **External Ollama** — single GPU VPS (Hetzner / Lambda / RunPod), all
-  backends point at it via `OLLAMA_BASE`.
+Set these two env vars on your host (Railway/Cloud Run/Render/etc.):
+
+```
+OLLAMA_BASE=https://ollama.com
+OLLAMA_API_KEY=oa_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+That's it — no GPU VPS, no `ollama pull`, no Docker network gymnastics.
+Verified working: https://scorvoai-production.up.railway.app/ready
+(returns `ready: true` with this setup).
+
+> **When you would need a local Ollama:** only if you want to swap
+> `gemma4:31b-cloud` for a self-hosted Gemma variant (e.g. `gemma4:e4b`
+> on an edge device). In that case, host Ollama on a GPU VPS and point
+> `OLLAMA_BASE` at it.
 
 ### 2.4 Railway deployment — step by step
 
@@ -116,25 +143,17 @@ cd backend
 railway init                          # creates the project
 ```
 
-**Step 3.** Set required env vars:
+**Step 3.** Set required env vars (point straight at Ollama Cloud — no
+second service needed):
 ```bash
-railway variables set \
-  OLLAMA_API_KEY=oa_xxxxxxxx \
-  OLLAMA_BASE=http://ollama:11434 \
-  CORS_ORIGINS=*
+railway variables --set OLLAMA_API_KEY=oa_xxxxxxxx \
+                  --set OLLAMA_BASE=https://ollama.com \
+                  --set CORS_ORIGINS=*
 ```
 
-**Step 4.** Add Ollama as a second service in the same Railway project:
-- In Railway UI: `+ New` → `Empty Service` → name it `ollama`
-- Settings → Source → `Deploy from Docker Image` → `ollama/ollama:latest`
-- Variables → add `OLLAMA_HOST=0.0.0.0`
-- Volumes → add a 50 GB volume mounted at `/root/.ollama`
-- Networking → Private Networking on (so your backend can reach it at
-  `http://ollama:11434` within the Railway project)
-- After it boots, open a shell in the Ollama service and run:
-  ```bash
-  ollama pull gemma4:31b-cloud
-  ```
+**Step 4.** _(skipped — no separate Ollama service is required;
+the backend calls `https://ollama.com/api/chat` directly with the
+Bearer token from `OLLAMA_API_KEY`)_
 
 **Step 5.** Deploy the backend:
 ```bash
