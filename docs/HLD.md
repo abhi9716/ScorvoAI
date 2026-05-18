@@ -22,25 +22,29 @@ ScorvoAI is an AI-powered exam-prep platform for Indian government competitive e
 ## 2. System Context
 
 ```
-┌─────────────────────┐         ┌───────────────────────────┐         ┌──────────────────┐
-│   Flutter Mobile    │ ──HTTP─►│  FastAPI Backend          │ ───────►│  Ollama (local)  │
-│   (Android/iOS)     │ ◄──────│  • /chat /quiz /lessons   │ ───────►│  Ollama Cloud    │
-│                     │         │  • /current-affairs       │         │  (web_search)    │
-└──────────┬──────────┘         │  • /notes /solve          │         └──────────────────┘
-           │                    └──────────┬────────────────┘
-           │ Firebase SDKs                 │ httpx
-           ▼                               ▼
-┌─────────────────────┐         ┌───────────────────────────┐
-│  Firebase Auth      │         │  SQLite (legacy notes)    │
-│  Firestore          │         │  Uploads (image OCR)      │
-│  (user data, lessons│         └───────────────────────────┘
-│   cache, analytics) │
+┌─────────────────────┐         ┌──────────────────────────────┐
+│   Flutter Mobile    │ HTTPS  │  FastAPI Backend             │
+│   (Android, signed  │◄──────►│  Railway-hosted Docker       │
+│    release APK)     │         │  • /chat /quiz /lessons      │
+│   • Dark+Light UI   │         │  • /current-affairs /solve   │
+│   • Theme toggle    │         │  • /health /ready /preflight │
+│   • Camera OCR      │         └──────────────┬───────────────┘
+└──────────┬──────────┘                        │ httpx + Bearer token
+           │ Firebase SDKs                     │ (OLLAMA_API_KEY)
+           ▼                                   ▼
+┌─────────────────────┐         ┌──────────────────────────────┐
+│  Firebase Auth      │         │  Ollama Cloud (ollama.com)   │
+│  Firestore          │         │  • /api/chat   → Gemma 4     │
+│  (user data, shared │         │  • /api/web_search           │
+│   lesson cache,     │         │  (gemma4:31b-cloud)          │
+│   daily news cache) │         └──────────────────────────────┘
 └─────────────────────┘
 ```
 
 **Trust boundaries:**
-- Mobile ↔ Backend: HTTPS in prod, plain HTTP for local dev (`usesCleartextTraffic` for dev only).
-- Backend ↔ Ollama Cloud: Bearer token (`OLLAMA_API_KEY`).
+- Mobile ↔ Backend: HTTPS via Railway-issued domain.
+- Backend ↔ Ollama Cloud: Bearer token (`OLLAMA_API_KEY`) — no local Ollama proxy, no GPU dependency.
+- Mobile ↔ Firebase: Google-issued ID tokens; Firestore rules enforce `auth.uid == uid`.
 - Mobile ↔ Firebase: Google-managed auth tokens + Firestore security rules.
 
 ---
@@ -137,12 +141,24 @@ The context block is prepended to the user's actual question so the LLM answers 
 
 | Layer    | Tech |
 | -------- | ---- |
-| Mobile   | Flutter 3.x (Dart 3), Material 3, fl_chart, gpt_markdown, image_picker, google_mlkit_text_recognition |
+| Mobile   | Flutter 3.x (Dart 3), Material 3, dark+light theme toggle, fl_chart, gpt_markdown, image_picker, google_mlkit_text_recognition, flutter_launcher_icons |
 | Auth     | Firebase Auth + Google Sign-In |
 | Database | Cloud Firestore (primary), SQLite (legacy backend notes) |
-| Backend  | FastAPI 0.115, Uvicorn, httpx |
-| AI       | Ollama (local) + Ollama Cloud Web Search |
-| OCR      | Google ML Kit (on-device) + Tesseract (legacy backend) |
+| Backend  | FastAPI 0.115, Uvicorn, httpx, deployed as Docker image on Railway |
+| AI       | Google Gemma 4 (`gemma4:31b-cloud`) via **Ollama Cloud** `/api/chat` with Bearer auth — **no local Ollama needed** |
+| Search   | Ollama Cloud `/api/web_search` |
+| OCR      | Google ML Kit (on-device) |
+| CI/Ops   | `preflight.py` (5-check sanity), `test_endpoints.sh` (11-endpoint smoke), `/health` & `/ready` probes |
+
+## 6.1 Production references
+
+| Resource | URL |
+| -------- | --- |
+| Live backend | https://scorvoai-production.up.railway.app |
+| `/health` | `{"status":"ok"}` |
+| `/ready` | full diagnostic JSON (Ollama reachable, API key set, model availability) |
+| Signed Android APK (89 MB) | https://github.com/abhi9716/ScorvoAI/raw/main/releases/scorvoai-v1.0.0.apk |
+| Public source repo (Apache 2.0) | https://github.com/abhi9716/ScorvoAI |
 
 ---
 
