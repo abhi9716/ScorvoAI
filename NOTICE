@@ -14,6 +14,8 @@ Built with Gemma — Google's open Gemma 4 family of models
   Use of Gemma is governed by the Gemma Terms of Use:
     https://ai.google.dev/gemma/terms
   We do not claim ownership of or any rights to the Gemma model itself.
+  Gemma is a trademark of Google LLC. ScorvoAI is neither endorsed by
+  nor affiliated with Google.
 
 Ollama — local model serving
   https://ollama.com

@@ -346,6 +346,8 @@ This project is built on Google's open **Gemma 4** family of models (`gemma4:31b
 
 Submitted to the **Gemma 4 Impact Challenge** (May 2026). See [`docs/SUBMISSION.md`](docs/SUBMISSION.md) for the competition writeup.
 
+> **Gemma is a trademark of Google LLC.** ScorvoAI is neither endorsed by nor affiliated with Google. We use Gemma in accordance with the [Gemma Terms of Use](https://ai.google.dev/gemma/terms).
+
 ---
 
 ## 🙏 Acknowledgements

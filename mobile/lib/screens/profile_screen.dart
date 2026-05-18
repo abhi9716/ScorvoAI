@@ -368,7 +368,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: const Icon(Icons.school_rounded, color: Colors.white, size: 28),
       ),
       children: const [
-        Text('AI-powered adaptive learning platform for government exam preparation.\n\nPowered by Ollama + Firebase.'),
+        Text('ScorvoAI is an AI-powered exam preparation app for Indian government competitive exams (UPSC, SSC, IBPS, SBI, RRB, State PCS). It uses a specialized Gemma model for AI-powered features.\n\nPowered by Ollama Cloud and Firebase.\n\nGemma is a trademark of Google LLC.'),
       ],
     );
   }

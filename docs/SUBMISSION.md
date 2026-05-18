@@ -200,7 +200,15 @@ Even reaching 1% of aspirants (300,000 users) at zero marginal cost per learner 
 
 ---
 
-## 9. What's Next
+## 9. Attribution
+
+ScorvoAI is built on Google's open Gemma 4 family of models, accessed at runtime via Ollama Cloud. We do not bundle, retrain, or redistribute the Gemma weights.
+
+**Gemma is a trademark of Google LLC.** ScorvoAI is neither endorsed by nor affiliated with Google. Use of Gemma is governed by the [Gemma Terms of Use](https://ai.google.dev/gemma/terms). Full third-party attribution: see [`NOTICE`](../NOTICE).
+
+---
+
+## 10. What's Next
 
 - v1.1 — push notifications (daily lesson + weekly progress)
 - v1.2 — full-length timed mock tests
