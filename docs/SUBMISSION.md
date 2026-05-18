@@ -23,7 +23,7 @@ Instead of stitching together a different AI service for every feature, we desig
 ## 3. What ScorvoAI Can Do
 
 ### 🎯 Adaptive AI Quizzes
-ScorvoAI learns how a student performs over time. If someone struggles with polity but performs well in quantitative aptitude, the app automatically rebalances practice questions and difficulty (avg ≥ 75 % → hard, ≥ 50 % → medium, else easy). Questions are streamed fresh from Gemma 4 every time, so practice never feels repetitive.
+ScorvoAI learns how a student performs over time. If someone struggles with polity but performs well in quantitative aptitude, the app rebalances both topic mix and difficulty on the next attempt. Questions are streamed fresh from Gemma 4 every time, so practice never feels repetitive.
 
 ### 📚 AI Micro-Lessons
 Students can pick any chapter from the syllabus of **13 major government exams** and instantly get a 350–550 word AI-generated lesson designed for quick learning. Every lesson follows the same structure — **Why this matters → Key Concepts → Worked Example → Tips & Tricks → Common Mistakes → In Exam**. Lessons are cached in Firestore, so the 1000th user reads the same lesson the first user paid to generate.
@@ -64,16 +64,7 @@ The model tag is defined **once** in `backend/services/ai_service.py:13`:
 ```python
 GEMMA_MODEL = os.getenv("GEMMA_MODEL", "gemma4:31b-cloud")
 ```
-Every generative endpoint (`/chat`, `/solve`, `/quiz`, `/lessons`, `/current-affairs`) routes through it. Override via env var (`GEMMA_MODEL=gemma4:e4b`) to swap to the edge variant.
-
-```bash
-git clone https://github.com/abhi9716/ScorvoAI.git
-cd ScorvoAI   # follow README "Quick Start"
-curl -X POST http://localhost:8000/chat \
-     -H 'Content-Type: application/json' \
-     -d '{"question":"Explain Article 21 in 2 lines"}'
-# Response is generated live by Gemma 4 via Ollama.
-```
+Every generative endpoint (`/chat`, `/solve`, `/quiz`, `/lessons`, `/current-affairs`) routes through it. Override via env var (`GEMMA_MODEL=gemma4:e4b`) to swap to the edge variant. Clone the repo, follow the README Quick Start, and any `curl` to `/chat` returns a live Gemma 4 response.
 
 ---
 
@@ -88,10 +79,7 @@ curl -X POST http://localhost:8000/chat \
          ▼                                 └───────────────────────────►│ Ollama Cloud │
 ┌─────────────────────┐                                                 │  web_search  │
 │ Firebase Auth +     │                                                 └──────────────┘
-│ Firestore           │
-│  • users/{uid}/...  │  ← per-user data (quiz_results, ai_notes, viewed_lessons)
-│  • lessons/{key}    │  ← shared lesson cache
-│  • current_affairs/ │  ← daily news cache
+│ Firestore           │  per-user quiz history + shared lesson & news cache
 └─────────────────────┘
 ```
 
@@ -99,13 +87,12 @@ The full **Exam → Stage → Paper → Subject → Chapter** taxonomy for 13 ex
 
 ---
 
-## 7. Technical Depth Highlights
+## 7. Technical Depth & Challenges Overcome
 
 - **RAG without a vector DB** — keyword-overlap scoring on user notes (+3 per title match, +1 per content match), capped at 8 notes per prompt. Simpler than embeddings, "good enough" at our context budget, 100 % on-device.
 - **Shared-cache economics** — lessons keyed by `subject__chapter__difficulty`. The 1,000th UPSC student to view "Fundamental Rights — Medium" reads the same cached lesson the first did, paid for once. This is how the app stays free.
 - **Adaptive difficulty curve** — per-question outcomes (`is_correct`, `subject`, `chapter`, `difficulty`) feed back into the next-quiz prompt.
 - **Streaming everywhere** — chat, quiz, and lesson generation all stream via SSE; first token in under 2 seconds even on 2G.
-- **Camera OCR** — Google ML Kit's on-device text recognition lets students point their phone at a printed question and get a solution.
 
 ---
 
@@ -121,22 +108,17 @@ The full **Exam → Stage → Paper → Subject → Chapter** taxonomy for 13 ex
 
 ScorvoAI was built for the students who are usually invisible to edtech.
 
-A girl studying in rural Bihar, a student living in a Mumbai chawl, a working mother preparing after office hours in Coimbatore — they should have access to the same quality of guidance as someone paying lakhs for coaching in Delhi.
+A girl studying in rural Bihar, a student in a Mumbai chawl, a working mother preparing after office hours in Coimbatore — they deserve the same quality of guidance as someone paying lakhs for coaching in Delhi.
 
-The app is **free**, **mobile-first**, **low-bandwidth friendly**, and built specifically for Indian government exams. Firestore offline persistence handles flaky 2G; lesson caching means our marginal cost per learner trends toward zero.
+The app is **free**, **mobile-first**, **low-bandwidth friendly**, and built specifically for Indian government exams. Firestore offline persistence handles flaky 2G; lesson caching pushes our marginal cost per learner toward zero.
 
-If ScorvoAI reaches even **1 % of India's aspirants** — around 300,000 students — that's 300,000 first-generation learners getting personalised AI tutoring that simply did not exist for them yesterday.
-
-Open models like **Gemma 4** and affordable hosted inference through **Ollama Cloud** are what made this possible. For the first time, building a truly scalable and accessible AI tutor for India feels achievable.
+If ScorvoAI reaches even **1 % of India's aspirants** — around 300,000 students — that is 300,000 first-generation learners getting personalised AI tutoring that simply did not exist for them yesterday. Open models like **Gemma 4** and affordable hosted inference through **Ollama Cloud** are what made this possible.
 
 ---
 
 ## 10. What's Next
 
-- **v1.1** — push notifications (daily lesson + weekly progress)
-- **v1.2** — full-length timed mock tests
-- **v2.0** — Hindi UI localisation (leveraging Gemma 4's multilingual base)
-- **v2.1** — voice-mode tutor (STT + TTS for low-literacy access)
+**v1.1** push notifications · **v1.2** full-length timed mock tests · **v2.0** Hindi UI localisation (Gemma 4 multilingual) · **v2.1** voice-mode tutor (STT + TTS for low-literacy access).
 
 ---
 

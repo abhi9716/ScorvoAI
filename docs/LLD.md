@@ -87,7 +87,6 @@ ScorvoAI/
 │   ├── LLD.md                           # this file
 │   ├── DEPLOYMENT.md                    # Railway + Play Store guide
 │   ├── SUBMISSION.md                    # Kaggle writeup (≤ 1,500 words)
-│   ├── VIDEO_SCRIPT.md                  # 3-min video pitch script
 │   └── cover.png                        # 560×280 Kaggle cover image
 │
 ├── LICENSE                              # Apache 2.0

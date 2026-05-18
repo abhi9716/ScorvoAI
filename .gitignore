@@ -81,3 +81,6 @@ Thumbs.db
 graphify-out/
 *.log
 *.bak
+
+# ─── Internal-only docs (not pushed to remote) ───────────────────────────
+docs/VIDEO_SCRIPT.md

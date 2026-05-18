@@ -264,8 +264,7 @@ ScorvoAI/
 │   ├── HLD.md              # high-level design
 │   ├── LLD.md              # low-level design + API contracts
 │   ├── DEPLOYMENT.md       # production deployment guide
-│   ├── SUBMISSION.md       # Kaggle Gemma 4 Impact Challenge writeup
-│   └── VIDEO_SCRIPT.md     # 3-min video pitch script
+│   └── SUBMISSION.md       # Kaggle Gemma 4 Impact Challenge writeup
 ├── releases/
 │   └── scorvoai-v1.0.0.apk # published Android build
 ├── LICENSE                 # Apache 2.0
