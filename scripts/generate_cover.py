@@ -87,7 +87,7 @@ def main() -> None:
     # Wordmark
     draw.text((x, 50), "ScorvoAI", fill=WHITE, font=title_font)
     # Brand positioning
-    draw.text((x, 105), "AI Companion", fill=WHITE_DIM, font=sub_font)
+    draw.text((x, 105), "Powered by Gemma 4", fill=WHITE_DIM, font=sub_font)
     # The loop (memorable hook) — split across two lines for fit
     draw.text((x, 145), "Learn · Practice", fill=WHITE, font=sub_font)
     draw.text((x, 167), "Analyse · Improve", fill=WHITE, font=sub_font)
@@ -98,21 +98,6 @@ def main() -> None:
         fill=(255, 255, 255, 160),
         font=foot_font,
     )
-
-    # 5. "Built with Gemma 4" chip bottom-right
-    chip_text = "Built with Gemma 4"
-    chip_font = best_font(13)
-    cw, ch = draw.textbbox((0, 0), chip_text, font=chip_font)[2:]
-    cx, cy = W - cw - 24, H - ch - 20
-    pad_x, pad_y = 10, 5
-    draw.rounded_rectangle(
-        (cx - pad_x, cy - pad_y, cx + cw + pad_x, cy + ch + pad_y),
-        radius=10,
-        fill=(0, 0, 0, 110),
-        outline=(255, 255, 255, 160),
-        width=1,
-    )
-    draw.text((cx, cy), chip_text, fill=(255, 255, 255, 255), font=chip_font)
 
     canvas.convert("RGB").save(OUT, "PNG", optimize=True)
     print(f"✓ Cover written to {OUT} ({W}×{H})")
